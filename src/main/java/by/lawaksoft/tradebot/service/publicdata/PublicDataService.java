@@ -1,9 +1,11 @@
 package by.lawaksoft.tradebot.service.publicdata;
 
-import by.lawaksoft.tradebot.dto.model.publicdata.InstrumentsDto;
+import by.lawaksoft.tradebot.dto.model.InstrumentDto;
 import by.lawaksoft.tradebot.dto.model.publicdata.InstrumentsFilterDto;
+
+import java.util.List;
 
 public interface PublicDataService {
 
-    InstrumentsDto getInstruments(InstrumentsFilterDto filterDto);
+    List<InstrumentDto> getInstruments(InstrumentsFilterDto filterDto);
 }

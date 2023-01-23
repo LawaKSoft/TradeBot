@@ -1,15 +1,18 @@
 package by.lawaksoft.tradebot.controller.market;
 
 import by.lawaksoft.tradebot.controller.Navigation;
-import by.lawaksoft.tradebot.dto.model.market.CandlesticksDto;
+import by.lawaksoft.tradebot.dto.model.CandlestickDto;
+import by.lawaksoft.tradebot.dto.model.TickerDto;
 import by.lawaksoft.tradebot.dto.request.CandlesticksFilterDto;
-import by.lawaksoft.tradebot.dto.model.market.TickerDto;
 import by.lawaksoft.tradebot.service.market.MarketService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(Navigation.MARKET)
@@ -22,16 +25,16 @@ public class MarketController {
     }
 
     @GetMapping(Navigation.TICKERS)
-    public ResponseEntity<TickerDto> getTickers(String instrumentId) {
+    public ResponseEntity<Optional<TickerDto>> getTickers(String instrumentId) {
 
-        TickerDto tickers = marketService.getTickers(instrumentId);
+        var tickers = marketService.getTickers(instrumentId);
         return ResponseEntity.ok(tickers);
     }
 
     @GetMapping(value = Navigation.CANDLES, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<CandlesticksDto> getCandlesticks(CandlesticksFilterDto filterDto) {
+    public ResponseEntity<List<CandlestickDto>> getCandlesticks(CandlesticksFilterDto filterDto) {
 
-        CandlesticksDto candlesticks = marketService.getCandlesticks(filterDto);
+        var candlesticks = marketService.getCandlesticks(filterDto);
         return ResponseEntity.ok(candlesticks);
     }
 }

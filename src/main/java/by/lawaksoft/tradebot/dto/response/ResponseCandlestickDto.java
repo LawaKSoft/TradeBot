@@ -6,15 +6,15 @@ import java.util.List;
 
 public class ResponseCandlestickDto extends ResponseDto{
 
-	private final List<String> candlesticks;
+	private final List<FullCandlestickDto> candlesticks;
 
-	public ResponseCandlestickDto(@JsonProperty("code") String code, @JsonProperty("msg") String message, @JsonProperty("data") List<String> candlesticks) {
+	public ResponseCandlestickDto(@JsonProperty("code") String code, @JsonProperty("msg") String message, @JsonProperty("data") List<FullCandlestickDto> candlesticks) {
 
 		super(code, message);
 		this.candlesticks = candlesticks;
 	}
 
-	public List<String> getCandlesticks() {
+	public List<FullCandlestickDto> getCandlesticks() {
 
 		return candlesticks;
 	}

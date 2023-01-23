@@ -1,12 +1,14 @@
 package by.lawaksoft.tradebot.controller.publicdata;
 
 import by.lawaksoft.tradebot.controller.Navigation;
-import by.lawaksoft.tradebot.dto.model.publicdata.InstrumentsDto;
+import by.lawaksoft.tradebot.dto.model.InstrumentDto;
 import by.lawaksoft.tradebot.dto.model.publicdata.InstrumentsFilterDto;
 import by.lawaksoft.tradebot.service.publicdata.PublicDataService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @RequestMapping(Navigation.PUBLIC)
 public class PublicDataController {
@@ -18,9 +20,9 @@ public class PublicDataController {
     }
 
     @GetMapping(value = Navigation.INSTRUMENTS)
-    public ResponseEntity<InstrumentsDto> getInstruments(InstrumentsFilterDto filterDto) {
+    public ResponseEntity<List<InstrumentDto>> getInstruments(InstrumentsFilterDto filterDto) {
 
-        InstrumentsDto instruments = publicDataService.getInstruments(filterDto);
+        var instruments = publicDataService.getInstruments(filterDto);
         return ResponseEntity.ok(instruments);
     }
 }

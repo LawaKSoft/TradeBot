@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FullInstrumentDto {
 
-	private final String intrumentType;//instType	String	Instrument type
+	private final String instrumentType;//instType	String	Instrument type
 	private final String instrumentId;//instId	String	Instrument ID, e.g. BTC-USD-SWAP
 	private final String underlying;//uly	String	Underlying, e.g. BTC-USD Only applicable to FUTURES/SWAP/OPTION
 	private final String instrumentFamily;//instFamily	String	Instrument family, e.g. BTC-USD 	Only applicable to FUTURES/SWAP/OPTION
@@ -43,7 +43,7 @@ public class FullInstrumentDto {
 			@JsonProperty("maxLmtSz") String maxLimitSize, @JsonProperty("maxMktSz") String maxMarketSize, @JsonProperty("maxTwapSz") String maxTwapSize,
 			@JsonProperty("maxIcebergSz") String maxIceBergSize, @JsonProperty("maxTriggerSz") String maxTriggerSize, @JsonProperty("maxStopSz") String maxStopSize) {
 
-		this.intrumentType = intrumentType;
+		this.instrumentType = intrumentType;
 		this.instrumentId = instrumentId;
 		this.underlying = underlying;
 		this.instrumentFamily = instrumentFamily;
@@ -73,9 +73,9 @@ public class FullInstrumentDto {
 		this.maxStopSize = maxStopSize;
 	}
 
-	public String getIntrumentType() {
+	public String getInstrumentType() {
 
-		return intrumentType;
+		return instrumentType;
 	}
 
 	public String getInstrumentId() {
