@@ -1,26 +1,23 @@
 package by.lawaksoft.tradebot.entity;
 
+import by.lawaksoft.tradebot.entity.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+//@Entity
 public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String instrumentType;
     private String instrumentId;
     private String quantityUnitService;
-    private String marginCurrency;
     private String orderId;
     private String clientOrderId;
     private String tag;
@@ -38,7 +35,6 @@ public class Order {
     private String lastFilledTime;
     private String averageFilledPrice;
     private String state;
-    private double lever;
     private double takeProfitTriggerPrice;
     private String takeProfitTriggerPriceType;
     private double takeProfitOrderPrice;
@@ -54,11 +50,9 @@ public class Order {
     private boolean reduceOnly;
     private long canceledSource;
     private String cancelSourceReason;
-    private String quickMarginType;
     private String unixTime;
     private String creationTime;
     private boolean banAmend;
-
-    @OneToOne
     private User user;
+    private Status status;
 }

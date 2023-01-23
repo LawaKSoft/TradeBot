@@ -3,7 +3,7 @@ package by.lawaksoft.tradebot.dto.order;
 import lombok.Builder;
 
 @Builder
-public class    GetOrderResponseDTO {
+public class GetOrderResponseDTO {
 
     private long id;
     private String instrumentId;

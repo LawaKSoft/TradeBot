@@ -1,14 +1,18 @@
 package by.lawaksoft.tradebot.dto.cancel_order;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
+@Getter
+@AllArgsConstructor
 public class CancelOrderRequestDTO {
 
     private String ordId;
     private String instId;
     private String clOrdId;
+
+    public CancelOrderRequestDTO(String ordId, String instId) {
+        this.ordId = ordId;
+        this.instId = instId;
+    }
 }

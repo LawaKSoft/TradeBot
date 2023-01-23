@@ -10,7 +10,6 @@ public class PlaceOrderRequestDTO {
 
     private String instId;
     private String tdMode;
-    private String ccy;
     private String clOrdId;
     private String side;
     private String ordType;
@@ -27,7 +26,7 @@ public class PlaceOrderRequestDTO {
     private double slOrdPx;
     private String tpTriggerPxType;
     private String slTriggerPxType;
-    private String quickMgnType;
+
 
     public PlaceOrderRequestDTO(String instId, String tdMode, String side, String ordType, String px) {
         this.instId = instId;

@@ -1,45 +1,58 @@
 package by.lawaksoft.tradebot.controller;
 
+import by.lawaksoft.tradebot.client.TradeClient;
 import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.GetOrderDetailsDTO;
 import by.lawaksoft.tradebot.dto.order.GetOrderResponseDTO;
+import by.lawaksoft.tradebot.dto.order.OrderDetailsResponseDTO;
 import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
-import by.lawaksoft.tradebot.dto.place_order.PlaceOrderResponseDTO;
-import by.lawaksoft.tradebot.service.OrderDtoService;
+import by.lawaksoft.tradebot.service.trade.TradeService;
+import by.lawaksoft.tradebot.util.Encoder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.OK;
 
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping(Navigation.ORDER)
 public class OrderController {
 
-    private final OrderDtoService orderDtoService;
+    private final TradeService tradeService;
 
     @Autowired
-    public OrderController(OrderDtoService orderDtoService) {
-        this.orderDtoService = orderDtoService;
+    public OrderController(TradeService tradeService) {
+        this.tradeService = tradeService;
     }
 
-    @PostMapping("/place")
+    @Autowired
+    private TradeClient tradeClient;
+
+    @PostMapping(Navigation.PLACE)
     public ResponseEntity<GetOrderResponseDTO> placeOrder(@RequestBody PlaceOrderRequestDTO placeOrderRequestDTO) {
-        return new ResponseEntity<>(orderDtoService.placeOrder(placeOrderRequestDTO), OK);
+        return ResponseEntity.ok(tradeService.placeOrder(placeOrderRequestDTO));
     }
 
-    @GetMapping("/place")
-    public ResponseEntity<GetOrderDetailsDTO> getPlaceOrder(@RequestParam(value = "instId") String instrumentId,
-                                                           @RequestParam(value = "ordId") String orderId,
-                                                           @RequestParam(value = "clOrdId", required = false) String clientOrderId) {
-        return new ResponseEntity<>(orderDtoService.getOrderDetails(instrumentId, orderId, clientOrderId), OK);
+    @GetMapping(Navigation.PLACE)
+    public ResponseEntity<GetOrderDetailsDTO> getOrderDetails(@RequestParam String instrumentId,
+                                                            @RequestParam(required = false) String orderId,
+                                                            @RequestParam(required = false) String clientOrderId) {
+        return ResponseEntity.ok(tradeService.getOrderDetails(instrumentId, orderId, clientOrderId));
     }
 
-    @DeleteMapping("/place")
-    public ResponseEntity<HttpStatus> deletePlaceOrder(@RequestBody CancelOrderRequestDTO cancelOrderRequestDTO) {
-        return null;
+    @DeleteMapping(Navigation.PLACE)
+    public ResponseEntity<GetOrderResponseDTO> deletePlaceOrder(@RequestBody CancelOrderRequestDTO cancelOrderRequestDTO) {
+        return ResponseEntity.ok(tradeService.cancelOrder(cancelOrderRequestDTO));
     }
 }

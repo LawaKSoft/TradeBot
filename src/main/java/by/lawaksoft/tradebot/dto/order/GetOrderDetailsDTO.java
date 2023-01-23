@@ -9,7 +9,6 @@ public class GetOrderDetailsDTO {
     private String instrumentType;
     private String instrumentId;
     private String quantityUnitService;
-    private String marginCurrency;
     private String orderId;
     private String clientOrderId;
     private String tag;
@@ -27,7 +26,6 @@ public class GetOrderDetailsDTO {
     private String lastFilledTime;
     private String averageFilledPrice;
     private String state;
-    private double lever;
     private double takeProfitTriggerPrice;
     private String takeProfitTriggerPriceType;
     private double takeProfitOrderPrice;
@@ -43,7 +41,6 @@ public class GetOrderDetailsDTO {
     private boolean reduceOnly;
     private long canceledSource;
     private String cancelSourceReason;
-    private String quickMarginType;
     private String unixTime;
     private String creationTime;
     private boolean banAmend;

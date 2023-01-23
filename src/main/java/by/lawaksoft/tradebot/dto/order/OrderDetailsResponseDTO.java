@@ -1,24 +1,23 @@
 package by.lawaksoft.tradebot.dto.order;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
+@ToString
 public class OrderDetailsResponseDTO {
 
     private String instType;
+    private String instId;
     private String ccy;
     private String ordId;
     private String clOrdId;
     private String tag;
-    private String px;
-    private String sz;
-    private String pnl;
-    private String StringordType;
+    private double px;
+    private double sz;
+    private double pnl;
+    private String ordType;
     private String side;
     private String posSide;
     private String tdMode;
@@ -42,7 +41,7 @@ public class OrderDetailsResponseDTO {
     private String rebate;
     private String tgtCcy;
     private String category;
-    private String reduceOnly;
+    private boolean reduceOnly;
     private String cancelSource;
     private String cancelSourceReason;
     private String quickMgnType;
