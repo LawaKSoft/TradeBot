@@ -44,4 +44,5 @@ public class GetOrderDetailsDTO {
     private String unixTime;
     private String creationTime;
     private boolean banAmend;
+    private String requestId;
 }

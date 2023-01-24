@@ -1,6 +1,7 @@
 package by.lawaksoft.tradebot.service.util.impl;
 
 import by.lawaksoft.tradebot.client.ClientNavigation;
+import by.lawaksoft.tradebot.dto.amend_order.AmendOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.entity.enums.Methode;
@@ -13,6 +14,7 @@ public class CreateTradeMessageServiceImpl implements CreateTradeMessageService 
 
     private final static String ORDER_PATH = "/api/v5/trade/order";
     private final static String CANCEL_ORDER_PATH = "/api/v5/trade/cancel-order";
+    private final static String AMEN_ORDER_PATH = "/api/v5/trade/amend-order";
 
     @Override
     public String placeOrderMessage(PlaceOrderRequestDTO placeOrderRequestDTO, String timestamp) {
@@ -29,5 +31,10 @@ public class CreateTradeMessageServiceImpl implements CreateTradeMessageService 
     @Override
     public String cancelOrderMessage(CancelOrderRequestDTO cancelOrderRequestDTO, String timestamp) {
         return timestamp + Methode.POST + CANCEL_ORDER_PATH + JsonMapper.objectToJson(cancelOrderRequestDTO);
+    }
+
+    @Override
+    public String amendOrderMessage(AmendOrderRequestDTO amendOrderRequestDTO, String timestamp) {
+        return timestamp + Methode.POST + AMEN_ORDER_PATH + JsonMapper.objectToJson(amendOrderRequestDTO);
     }
 }

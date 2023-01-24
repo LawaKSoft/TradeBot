@@ -6,14 +6,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
+@Entity(name = "orders")
 public class Order {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String instrumentType;
     private String instrumentId;
@@ -53,6 +57,11 @@ public class Order {
     private String unixTime;
     private String creationTime;
     private boolean banAmend;
+    private String requestId;
+
+    @OneToOne
     private User user;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
 }
