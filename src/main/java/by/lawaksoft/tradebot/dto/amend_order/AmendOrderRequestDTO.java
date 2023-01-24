@@ -1,10 +1,11 @@
 package by.lawaksoft.tradebot.dto.amend_order;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
+@Builder
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class AmendOrderRequestDTO {
 
     private String instId;

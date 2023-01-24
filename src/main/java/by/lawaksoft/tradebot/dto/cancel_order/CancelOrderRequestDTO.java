@@ -1,10 +1,12 @@
 package by.lawaksoft.tradebot.dto.cancel_order;
 
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 @Builder
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CancelOrderRequestDTO {
 
     private String ordId;

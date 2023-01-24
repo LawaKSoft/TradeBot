@@ -28,10 +28,10 @@ public class TradeController {
         return ResponseEntity.ok(tradeService.placeOrder(placeOrderRequestDTO));
     }
 
-    @GetMapping(Navigation.PLACE)
+    @GetMapping(Navigation.ORDER)
     public ResponseEntity<GetOrderDetailsDTO> getOrderDetails(@RequestParam String instrumentId,
-                                                            @RequestParam(required = false) String orderId,
-                                                            @RequestParam(required = false) String clientOrderId) {
+                                                              @RequestParam(required = false) String orderId,
+                                                              @RequestParam(required = false) String clientOrderId) {
         return ResponseEntity.ok(tradeService.getOrderDetails(instrumentId, orderId, clientOrderId));
     }
 

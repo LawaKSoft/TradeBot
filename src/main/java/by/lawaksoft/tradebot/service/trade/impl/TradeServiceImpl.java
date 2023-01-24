@@ -20,6 +20,7 @@ import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
 import by.lawaksoft.tradebot.util.TimeManager;
 import feign.FeignException;
 import org.aspectj.weaver.ast.Or;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -31,13 +32,14 @@ public class TradeServiceImpl implements TradeService {
 
     private final OrderService orderService;
     private final CreateTradeMessageService createTradeMessageService;
-    private final TradeClient tradeClient;
     private final OkxConfigSecurity okxConfigSecurity;
 
-    public TradeServiceImpl(OrderService orderService, CreateTradeMessageService createTradeMessageService, TradeClient tradeClient, OkxConfigSecurity okxConfigSecurity) {
+    @Autowired
+    private TradeClient tradeClient;
+
+    public TradeServiceImpl(OrderService orderService, CreateTradeMessageService createTradeMessageService, OkxConfigSecurity okxConfigSecurity) {
         this.orderService = orderService;
         this.createTradeMessageService = createTradeMessageService;
-        this.tradeClient = tradeClient;
         this.okxConfigSecurity = okxConfigSecurity;
     }
 

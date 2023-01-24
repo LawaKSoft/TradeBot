@@ -21,7 +21,7 @@ public interface TradeClient {
 
     @PostMapping(ClientNavigation.ORDER)
     OrderResponseDTO placeOrder(@RequestBody PlaceOrderRequestDTO placeOrderRequestDTO,
-                                     @RequestHeader Map<String, String> header);
+                                @RequestHeader Map<String, String> header);
 
     @PostMapping(ClientNavigation.CANCEL_ORDER)
     OrderResponseDTO cancelOrder(@RequestBody CancelOrderRequestDTO cancelOrderRequestDTO,
@@ -29,5 +29,5 @@ public interface TradeClient {
 
     @PostMapping(ClientNavigation.AMEND_ORDER)
     OrderResponseDTO amendOrder(@RequestBody AmendOrderRequestDTO amendOrderRequestDTO,
-                                @RequestBody Map<String, String> header);
+                                @RequestHeader Map<String, String> header);
 }
