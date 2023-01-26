@@ -4,7 +4,6 @@ import by.lawaksoft.tradebot.entity.Order;
 
 public interface OrderService {
 
-    Order create(Order order);
-    Order update(Order order);
+    Order save(Order order);
     Order findOrderByOrderIdAndUserId(String orderId, long userId);
 }

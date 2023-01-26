@@ -5,7 +5,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-@ToString
+@Builder
 public class OrderDetailsResponseDTO {
 
     private String instType;

@@ -1,6 +1,6 @@
 package by.lawaksoft.tradebot.entity.enums;
 
-public enum Methode {
+public enum Method {
 
     GET,
     POST;

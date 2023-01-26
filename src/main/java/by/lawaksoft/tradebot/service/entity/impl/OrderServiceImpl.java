@@ -20,12 +20,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order create(Order order) {
-        return orderRepository.save(order);
-    }
-
-    @Override
-    public Order update(Order order) {
+    public Order save(Order order) {
         return orderRepository.save(order);
     }
 

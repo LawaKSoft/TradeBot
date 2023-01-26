@@ -1,8 +1,10 @@
 package by.lawaksoft.tradebot.dto.order;
 
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
+@Getter
 public class GetOrderDetailsDTO {
 
     private long id;

@@ -2,6 +2,7 @@ package by.lawaksoft.tradebot.service.trade.impl;
 
 import by.lawaksoft.tradebot.client.TradeClient;
 import by.lawaksoft.tradebot.config.security.OkxConfigSecurity;
+import by.lawaksoft.tradebot.config.security.SecurityService;
 import by.lawaksoft.tradebot.dto.amend_order.AmendOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.GetOrderDetailsDTO;
@@ -19,7 +20,6 @@ import by.lawaksoft.tradebot.service.trade.TradeService;
 import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
 import by.lawaksoft.tradebot.util.TimeManager;
 import feign.FeignException;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,20 +33,21 @@ public class TradeServiceImpl implements TradeService {
     private final OrderService orderService;
     private final CreateTradeMessageService createTradeMessageService;
     private final OkxConfigSecurity okxConfigSecurity;
+    private final SecurityService securityService;
 
     @Autowired
     private TradeClient tradeClient;
 
-    public TradeServiceImpl(OrderService orderService, CreateTradeMessageService createTradeMessageService, OkxConfigSecurity okxConfigSecurity) {
+    public TradeServiceImpl(OrderService orderService, CreateTradeMessageService createTradeMessageService, OkxConfigSecurity okxConfigSecurity, SecurityService securityService) {
         this.orderService = orderService;
         this.createTradeMessageService = createTradeMessageService;
         this.okxConfigSecurity = okxConfigSecurity;
+        this.securityService = securityService;
     }
 
     @Override
     public GetOrderResponseDTO placeOrder(PlaceOrderRequestDTO placeOrderRequestDTO) {
-        //get user from security
-        User user = new User();
+        User user = securityService.getUser();
 
         Order orderMap = mapPlaceOrderRequestDTOToOrder(placeOrderRequestDTO);
 
@@ -64,14 +65,14 @@ public class TradeServiceImpl implements TradeService {
         orderMap.setUser(user);
         orderMap.setStatus(Status.ACTIVE);
 
-        Order orderDb = orderService.create(orderMap);
+        Order orderDb = orderService.save(orderMap);
         return mapOrderToGetOrderResponseDTO(orderDb);
     }
 
     @Override
     public GetOrderDetailsDTO getOrderDetails(String instrumentId, String orderId, String clientOrderId) {
-        //get user from security
-        User user = new User();
+        User user = securityService.getUser();
+
         if (orderId.isBlank() && clientOrderId.isBlank()) {
             throw new BusinessException("Order id and client order id cant be empty");
         }
@@ -89,14 +90,16 @@ public class TradeServiceImpl implements TradeService {
         Order order = mapOrderDetailsResponseDTOToOrder(orderDetailsResponseDTO);
         order.setUser(user);
         order.setOrderId(orderDb.getOrderId());
+        order.setId(orderDb.getId());
 
-        Order updateOrder = orderService.update(order);
+        Order updateOrder = orderService.save(order);
         return mapOrderToGetOrderDetailsDTO(updateOrder);
     }
 
     @Override
     public GetOrderResponseDTO cancelOrder(CancelOrderRequestDTO cancelOrderRequestDTO) {
-        User user = new User();
+        User user = securityService.getUser();
+
         if (cancelOrderRequestDTO.getClOrdId().isBlank() && cancelOrderRequestDTO.getOrdId().isBlank()) {
             throw new BusinessException("Order id and client order id cant be empty");
         }
@@ -110,13 +113,13 @@ public class TradeServiceImpl implements TradeService {
 
         Order order = orderService.findOrderByOrderIdAndUserId(orderResponseDTO.getData().get(0).getOrdId(), user.getId());
         order.setStatus(Status.CANCELED);
-        Order orderDb = orderService.update(order);
+        Order orderDb = orderService.save(order);
         return mapOrderToGetOrderResponseDTO(orderDb);
     }
 
     @Override
     public GetOrderResponseDTO amendOrder(AmendOrderRequestDTO amendOrderRequestDTO) {
-        User user = new User();
+        User user = securityService.getUser();
         checkAmendOrderReqFields(amendOrderRequestDTO);
 
         OrderResponseDTO orderResponseDTO;
@@ -131,7 +134,7 @@ public class TradeServiceImpl implements TradeService {
         orderDb.setRequestId(orderResponseDTO.getData().get(0).getReqId());
         orderDb.setPrice(amendOrderRequestDTO.getNewPx());
 
-        Order updateOrder = orderService.update(orderDb);
+        Order updateOrder = orderService.save(orderDb);
         return mapOrderToGetOrderResponseDTO(updateOrder);
     }
 
