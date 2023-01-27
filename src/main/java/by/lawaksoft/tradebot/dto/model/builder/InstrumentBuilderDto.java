@@ -1,6 +1,6 @@
 package by.lawaksoft.tradebot.dto.model.builder;
 
-import by.lawaksoft.tradebot.dto.model.InstrumentDto;
+import by.lawaksoft.tradebot.dto.model.publicdata.InstrumentDto;
 
 public class InstrumentBuilderDto {
 

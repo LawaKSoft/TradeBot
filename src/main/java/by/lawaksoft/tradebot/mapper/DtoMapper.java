@@ -1,12 +1,11 @@
 package by.lawaksoft.tradebot.mapper;
 
-import by.lawaksoft.tradebot.dto.model.CandlestickDto;
-import by.lawaksoft.tradebot.dto.model.InstrumentDto;
-import by.lawaksoft.tradebot.dto.model.TickerDto;
+import by.lawaksoft.tradebot.dto.model.market.CandlestickDto;
+import by.lawaksoft.tradebot.dto.model.publicdata.InstrumentDto;
+import by.lawaksoft.tradebot.dto.model.market.TickerDto;
 import by.lawaksoft.tradebot.dto.model.builder.CandlestickBuilderDto;
 import by.lawaksoft.tradebot.dto.model.builder.InstrumentBuilderDto;
 import by.lawaksoft.tradebot.dto.model.builder.TickerBuilderDto;
-import by.lawaksoft.tradebot.dto.response.FullCandlestickDto;
 import by.lawaksoft.tradebot.dto.response.FullInstrumentDto;
 import by.lawaksoft.tradebot.dto.response.FullTickerDto;
 
@@ -34,18 +33,18 @@ public final class DtoMapper {
 				.build();
 	}
 
-	public static CandlestickDto toCandlestickDto(FullCandlestickDto fullCandlestickDto) {
+	public static CandlestickDto toCandlestickDto(String[] fullCandlestickDto) {
 
 		return CandlestickBuilderDto.newBuilder()
-				.timestamp(Long.parseLong(fullCandlestickDto.getTimestamp()))
-				.openPrice(Double.parseDouble(fullCandlestickDto.getOpenPrice()))
-				.highestPrice(Double.parseDouble(fullCandlestickDto.getHighestPrice()))
-				.lowestPrice(Double.parseDouble(fullCandlestickDto.getLowestPrice()))
-				.closePrice(Double.parseDouble(fullCandlestickDto.getClosePrice()))
-				.volumeContract(Double.parseDouble(fullCandlestickDto.getVolumeContract()))
-				.volCurrency(Double.parseDouble(fullCandlestickDto.getVolCurrency()))
-				.volCurrencyQuote(Double.parseDouble(fullCandlestickDto.getVolCurrencyQuote()))
-				.confirm(Boolean.parseBoolean(fullCandlestickDto.getConfirm()))
+				.timestamp(Long.parseLong(fullCandlestickDto[0]))
+				.openPrice(Double.parseDouble(fullCandlestickDto[1]))
+				.highestPrice(Double.parseDouble(fullCandlestickDto[2]))
+				.lowestPrice(Double.parseDouble(fullCandlestickDto[3]))
+				.closePrice(Double.parseDouble(fullCandlestickDto[4]))
+				.volumeContract(Double.parseDouble(fullCandlestickDto[5]))
+				.volCurrency(Double.parseDouble(fullCandlestickDto[6]))
+				.volCurrencyQuote(Double.parseDouble(fullCandlestickDto[7]))
+				.confirm(Boolean.parseBoolean(fullCandlestickDto[8]))
 				.build();
 	}
 

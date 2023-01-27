@@ -1,4 +1,4 @@
-package by.lawaksoft.tradebot.dto.model;
+package by.lawaksoft.tradebot.dto.model.publicdata;
 
 public class InstrumentDto {
 

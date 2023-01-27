@@ -13,7 +13,14 @@ public interface ClientNavigation {
 	String CANDLES = "/candles";
 
 	String PUBLIC_URL = OKX_URL + "/" + PUBLIC;
-	String INSTRUMENT = "/instrument";
+	String INSTRUMENT = "/instruments";
 
 	String INSTRUMENT_ID = "instId";
+	String INSTRUMENT_TYPE = "instType";
+	String INSTRUMENT_FAMILY = "instFamily";
+	String BAR = "bar";
+	String AFTER = "after";
+	String BEFORE = "before";
+	String LIMIT = "limit";
+	String ULY = "uly";
 }

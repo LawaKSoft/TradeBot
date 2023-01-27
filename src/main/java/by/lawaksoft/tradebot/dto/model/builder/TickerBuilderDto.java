@@ -1,6 +1,6 @@
 package by.lawaksoft.tradebot.dto.model.builder;
 
-import by.lawaksoft.tradebot.dto.model.TickerDto;
+import by.lawaksoft.tradebot.dto.model.market.TickerDto;
 
 public class TickerBuilderDto {
 

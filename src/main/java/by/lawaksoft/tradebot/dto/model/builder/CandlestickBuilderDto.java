@@ -1,6 +1,6 @@
 package by.lawaksoft.tradebot.dto.model.builder;
 
-import by.lawaksoft.tradebot.dto.model.CandlestickDto;
+import by.lawaksoft.tradebot.dto.model.market.CandlestickDto;
 
 public class CandlestickBuilderDto {
 
