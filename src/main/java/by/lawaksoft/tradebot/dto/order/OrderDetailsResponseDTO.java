@@ -4,6 +4,7 @@ import lombok.*;
 
 @AllArgsConstructor
 @Getter
+@Setter
 @NoArgsConstructor
 @Builder
 public class OrderDetailsResponseDTO {

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CancelOrderRequestDTO {

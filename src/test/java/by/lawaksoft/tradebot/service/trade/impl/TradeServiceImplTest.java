@@ -3,6 +3,8 @@ package by.lawaksoft.tradebot.service.trade.impl;
 import by.lawaksoft.tradebot.client.TradeClient;
 import by.lawaksoft.tradebot.config.security.OkxConfigSecurity;
 import by.lawaksoft.tradebot.config.security.SecurityService;
+import by.lawaksoft.tradebot.dto.amend_order.AmendOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.*;
 import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.entity.Order;
@@ -13,8 +15,6 @@ import by.lawaksoft.tradebot.service.entity.OrderService;
 import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
 import feign.FeignException;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -35,10 +35,6 @@ class TradeServiceImplTest {
     @MockBean
     private OrderService orderService;
     @MockBean
-    private CreateTradeMessageService createTradeMessageService;
-    @MockBean
-    private OkxConfigSecurity okxConfigSecurity;
-    @MockBean
     private TradeClient tradeClient;
     @MockBean
     private SecurityService securityService;
@@ -47,6 +43,7 @@ class TradeServiceImplTest {
     private final static String ORDER_ID = "orderId";
     private final static String CLIENT_ORDER_ID = "clientOrderId";
     private final static String TAG = "tag";
+    private final static String REQ_ID = "reqId";
 
     @Test
     void shouldPlaceOrder() {
@@ -121,9 +118,116 @@ class TradeServiceImplTest {
     }
 
     @Test
-    void shouldThrowExWhenFeignRequestGetDetails () {
+    void shouldThrowExWhenFeignRequestGetDetails() {
         when(tradeClient.getOrderDetails(any(), any(), any(), any())).thenThrow(FeignException.class);
         assertThrows(BusinessException.class, () -> tradeService.getOrderDetails(INST_ID, ORDER_ID, CLIENT_ORDER_ID));
+    }
+
+    @Test
+    void shouldThrowExWhenOrdIdAndClOrdIdNullGetDetails() {
+        assertThrows(BusinessException.class, () -> tradeService.getOrderDetails("", "", ""));
+    }
+
+    @Test
+    void shouldCancelOrder() {
+        User user = getUser();
+        OrderResponseDTO orderResponseDTO = getOrderResponseDTO();
+        CancelOrderRequestDTO cancelOrderRequestDTO = getCancelOrderRequestDTO();
+        Order order = Order.builder()
+                .user(user)
+                .id(1)
+                .orderId(ORDER_ID)
+                .build();
+
+        when(securityService.getUser()).thenReturn(user);
+        when(tradeClient.cancelOrder(any(), any())).thenReturn(orderResponseDTO);
+        when(orderService.findOrderByOrderIdAndUserId(ORDER_ID, 1)).thenReturn(order);
+        order.setStatus(Status.CANCELED);
+        when(orderService.save(order)).thenReturn(order);
+
+        GetOrderResponseDTO getOrderResponseDTO = tradeService.cancelOrder(cancelOrderRequestDTO);
+
+        assertEquals(getOrderResponseDTO.getOrderId(), ORDER_ID);
+        assertEquals(getOrderResponseDTO.getId(), 1);
+        verify(securityService).getUser();
+        verify(orderService).findOrderByOrderIdAndUserId(ORDER_ID, 1);
+        verify(orderService, times(1)).save(order);
+    }
+
+    @Test
+    void shouldThrowExWhenFeignReqCancelOrder() {
+        CancelOrderRequestDTO cancelOrderRequestDTO = getCancelOrderRequestDTO();
+        when(tradeClient.cancelOrder(any(), any())).thenThrow(FeignException.class);
+        assertThrows(BusinessException.class, () -> tradeService.cancelOrder(cancelOrderRequestDTO));
+    }
+
+    @Test
+    void shouldThrowExWhenClOrdIdAndOrdIdNullCancelOrder() {
+        User user = getUser();
+        CancelOrderRequestDTO cancelOrderRequestDTO = getCancelOrderRequestDTO();
+        cancelOrderRequestDTO.setClOrdId("");
+        cancelOrderRequestDTO.setOrdId("");
+        when(securityService.getUser()).thenReturn(user);
+        assertThrows(BusinessException.class, () -> tradeService.cancelOrder(cancelOrderRequestDTO));
+    }
+
+    @Test
+    void shouldAmendOrder() {
+        AmendOrderRequestDTO amendOrderRequestDTO = getAmendOrderRequestDTO();
+        User user = getUser();
+        OrderResponseDTO orderResponseDTO = getOrderResponseDTO();
+        Order order = Order.builder()
+                .user(user)
+                .id(1)
+                .orderId(ORDER_ID)
+                .requestId(REQ_ID)
+                .price(1)
+                .build();
+
+        when(securityService.getUser()).thenReturn(user);
+        when(tradeClient.amendOrder(any(), any())).thenReturn(orderResponseDTO);
+        when(orderService.findOrderByOrderIdAndUserId(ORDER_ID, 1)).thenReturn(order);
+        when(orderService.save(order)).thenReturn(order);
+
+        GetOrderResponseDTO getOrderResponseDTO = tradeService.amendOrder(amendOrderRequestDTO);
+
+        assertEquals(getOrderResponseDTO.getId(), 1);
+        assertEquals(getOrderResponseDTO.getOrderId(), ORDER_ID);
+        verify(securityService).getUser();
+        verify(tradeClient).amendOrder(any(), any());
+        verify(orderService, times(1)).findOrderByOrderIdAndUserId(ORDER_ID, 1);
+    }
+
+    @Test
+    void shouldThrowExWhenFeignReqAmendOrder() {
+        AmendOrderRequestDTO amendOrderRequestDTO = getAmendOrderRequestDTO();
+        User user = getUser();
+        when(securityService.getUser()).thenReturn(user);
+        when(tradeClient.amendOrder(any(), any())).thenThrow(FeignException.class);
+
+        assertThrows(BusinessException.class, () -> tradeService.amendOrder(amendOrderRequestDTO));
+    }
+
+    @Test
+    void shouldThrowExWhenOrdIdAndClOrdIdNullAmenOrder() {
+        AmendOrderRequestDTO amendOrderRequestDTO = getAmendOrderRequestDTO();
+        amendOrderRequestDTO.setOrdId("");
+        amendOrderRequestDTO.setClOrdId("");
+        User user = getUser();
+        when(securityService.getUser()).thenReturn(user);
+
+        assertThrows(BusinessException.class, () -> tradeService.amendOrder(amendOrderRequestDTO));
+    }
+
+    @Test
+    void shouldThrowExWhenPriceAndQuantityNullAmenOrder() {
+        AmendOrderRequestDTO amendOrderRequestDTO = getAmendOrderRequestDTO();
+        amendOrderRequestDTO.setNewSz("");
+        amendOrderRequestDTO.setNewPx(0);
+        User user = getUser();
+        when(securityService.getUser()).thenReturn(user);
+
+        assertThrows(BusinessException.class, () -> tradeService.amendOrder(amendOrderRequestDTO));
     }
 
     private PlaceOrderRequestDTO getPlaceOrderRequestDTO() {
@@ -158,13 +262,31 @@ class TradeServiceImplTest {
         return OrderDetailsResponseDTO.builder()
                 .ordId(ORDER_ID)
                 .build();
-
     }
 
     private GetOrderDetailsDTO getGetOrderDetailsDTO() {
         return GetOrderDetailsDTO.builder()
                 .id(1)
                 .orderId(ORDER_ID)
+                .build();
+    }
+
+    private CancelOrderRequestDTO getCancelOrderRequestDTO() {
+        return CancelOrderRequestDTO.builder()
+                .instId(INST_ID)
+                .clOrdId(CLIENT_ORDER_ID)
+                .ordId(ORDER_ID)
+                .build();
+    }
+
+    private AmendOrderRequestDTO getAmendOrderRequestDTO() {
+        return AmendOrderRequestDTO.builder()
+                .ordId(ORDER_ID)
+                .clOrdId(CLIENT_ORDER_ID)
+                .instId(INST_ID)
+                .newPx(1)
+                .reqId("1")
+                .newSz("1")
                 .build();
     }
 }
