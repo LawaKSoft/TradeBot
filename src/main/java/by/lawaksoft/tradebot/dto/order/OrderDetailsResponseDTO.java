@@ -2,6 +2,8 @@ package by.lawaksoft.tradebot.dto.order;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -15,7 +17,7 @@ public class OrderDetailsResponseDTO {
     private String ordId;
     private String clOrdId;
     private String tag;
-    private double px;
+    private BigDecimal px;
     private double sz;
     private double pnl;
     private String ordType;

@@ -2,6 +2,8 @@ package by.lawaksoft.tradebot.dto.amend_order;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Builder
 @Getter
 @Setter
@@ -15,17 +17,11 @@ public class AmendOrderRequestDTO {
     private String clOrdId;
     private String reqId;
     private String newSz;
-    private double newPx;
+    private BigDecimal newPx;
 
-    public AmendOrderRequestDTO(String instId, String ordId, double newPx) {
+    public AmendOrderRequestDTO(String instId, String ordId, BigDecimal newPx) {
         this.instId = instId;
         this.ordId = ordId;
         this.newPx = newPx;
-    }
-
-    public AmendOrderRequestDTO(String instId, String ordId, String newSz) {
-        this.instId = instId;
-        this.ordId = ordId;
-        this.newSz = newSz;
     }
 }

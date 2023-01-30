@@ -6,6 +6,8 @@ import by.lawaksoft.tradebot.dto.order.OrderDetailsResponseDTO;
 import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.entity.Order;
 
+import java.math.BigDecimal;
+
 public class OrderMapper {
 
     public static Order mapPlaceOrderRequestDTOToOrder(PlaceOrderRequestDTO placeOrderRequestDTO) {
@@ -15,7 +17,7 @@ public class OrderMapper {
                 .clientOrderId(placeOrderRequestDTO.getClOrdId())
                 .orderSide(placeOrderRequestDTO.getSide())
                 .orderType(placeOrderRequestDTO.getOrdType())
-                .price(Double.parseDouble(placeOrderRequestDTO.getPx()))
+                .price(placeOrderRequestDTO.getPx())
                 .quantityToBuyOrSell(Double.parseDouble(placeOrderRequestDTO.getSz()))
                 .tag(placeOrderRequestDTO.getTag())
                 .positionSide(placeOrderRequestDTO.getPosSide())

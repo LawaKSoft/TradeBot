@@ -6,7 +6,7 @@ import by.lawaksoft.tradebot.dto.order.GetOrderDetailsDTO;
 import by.lawaksoft.tradebot.dto.order.GetOrderResponseDTO;
 import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
 
-public interface TradeService {
+public interface ApiTradeService {
 
     GetOrderResponseDTO placeOrder(PlaceOrderRequestDTO placeOrderRequestDTO);
 

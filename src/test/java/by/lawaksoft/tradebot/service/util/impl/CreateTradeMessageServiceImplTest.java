@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,10 +42,18 @@ class CreateTradeMessageServiceImplTest {
     }
 
     @Test
-    void getOrderDetailsMessage() {
+    void getOrderDetailsByOrdIdMessage() {
         String timestamp = TimeManager.getTimestampForOkx();
-        String createMessage = createTradeMessageService.getOrderDetailsMessage(INST_ID, ORDER_ID, CLIENT_ORDER_ID, timestamp);
-        String message = timestamp + Method.GET + ORDER_PATH + "?ordId=" +  ORDER_ID + "&clOrdId=" + CLIENT_ORDER_ID + "&instId=" + INST_ID;
+        String createMessage = createTradeMessageService.getOrderDetailsByOrderIdMessage(INST_ID, ORDER_ID, timestamp);
+        String message = timestamp + Method.GET + ORDER_PATH + "?instId=" + INST_ID  + "&ordId=" +  ORDER_ID ;
+        assertEquals(createMessage, message);
+    }
+
+    @Test
+    void getOrderDetailsByClOrdIdMessage() {
+        String timestamp = TimeManager.getTimestampForOkx();
+        String createMessage = createTradeMessageService.getOrderDetailsByClientOrderIdMessage(INST_ID, CLIENT_ORDER_ID, timestamp);
+        String message = timestamp + Method.GET + ORDER_PATH + "?instId=" + INST_ID  + "&clOrdId=" +  CLIENT_ORDER_ID ;
         assertEquals(createMessage, message);
     }
 
@@ -70,7 +79,7 @@ class CreateTradeMessageServiceImplTest {
     private PlaceOrderRequestDTO getPlaceOrderRequestDTO() {
         return PlaceOrderRequestDTO.builder()
                 .instId(INST_ID)
-                .px("1")
+                .px(BigDecimal.ONE)
                 .sz("1")
                 .build();
     }
@@ -88,7 +97,7 @@ class CreateTradeMessageServiceImplTest {
                 .ordId(ORDER_ID)
                 .clOrdId(CLIENT_ORDER_ID)
                 .instId(INST_ID)
-                .newPx(1)
+                .newPx(BigDecimal.ONE)
                 .reqId("1")
                 .newSz("1")
                 .build();

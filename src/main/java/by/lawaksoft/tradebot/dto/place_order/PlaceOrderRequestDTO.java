@@ -2,6 +2,8 @@ package by.lawaksoft.tradebot.dto.place_order;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +15,7 @@ public class PlaceOrderRequestDTO {
     private String clOrdId;
     private String side;
     private String ordType;
-    private String px;
+    private BigDecimal px;
     private String sz;
     private String tag;
     private String posSide;
@@ -28,7 +30,7 @@ public class PlaceOrderRequestDTO {
     private String slTriggerPxType;
 
 
-    public PlaceOrderRequestDTO(String instId, String tdMode, String side, String ordType, String px) {
+    public PlaceOrderRequestDTO(String instId, String tdMode, String side, String ordType, BigDecimal px) {
         this.instId = instId;
         this.tdMode = tdMode;
         this.side = side;

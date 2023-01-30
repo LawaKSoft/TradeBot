@@ -31,10 +31,13 @@ public class CreateTradeMessageServiceImpl implements CreateTradeMessageService 
     }
 
     @Override
-    public String getOrderDetailsMessage(String instrumentId, String orderId, String clientOrderId, String timestamp) {
-        return timestamp + Method.GET + ORDER_PATH + "?" + ORDER_ID + "=" + orderId + "&" +
-                                                            CLIENT_ORDER_ID + "=" + clientOrderId + "&" +
-                                                            INSTRUMENT_ID + "=" + instrumentId;
+    public String getOrderDetailsByOrderIdMessage(String instrumentId, String orderId, String timestamp) {
+        return timestamp + Method.GET + ORDER_PATH + "?" + INSTRUMENT_ID + "=" + instrumentId + "&" + ORDER_ID + "=" + orderId;
+    }
+
+    @Override
+    public String getOrderDetailsByClientOrderIdMessage(String instrumentId, String clientOrderId, String timestamp) {
+        return timestamp + Method.GET + ORDER_PATH + "?" + INSTRUMENT_ID + "=" + instrumentId + "&" + CLIENT_ORDER_ID + "=" + clientOrderId;
     }
 
     @Override

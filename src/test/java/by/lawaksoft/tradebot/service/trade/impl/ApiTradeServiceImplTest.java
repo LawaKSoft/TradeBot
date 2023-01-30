@@ -10,7 +10,7 @@ import by.lawaksoft.tradebot.entity.Order;
 import by.lawaksoft.tradebot.entity.User;
 import by.lawaksoft.tradebot.entity.enums.Status;
 import by.lawaksoft.tradebot.exception.dto.BusinessException;
-import by.lawaksoft.tradebot.service.api.trade.impl.TradeServiceImpl;
+import by.lawaksoft.tradebot.service.api.trade.impl.ApiTradeServiceImpl;
 import by.lawaksoft.tradebot.service.entity.TradeOrderService;
 import feign.FeignException;
 import org.junit.jupiter.api.Test;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,10 +27,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class TradeServiceImplTest {
+class ApiTradeServiceImplTest {
 
     @Autowired
-    private TradeServiceImpl tradeService;
+    private ApiTradeServiceImpl tradeService;
 
     @MockBean
     private TradeOrderService orderService;
@@ -53,7 +54,7 @@ class TradeServiceImplTest {
                 .instrumentId(INST_ID)
                 .orderId(ORDER_ID)
                 .clientOrderId(CLIENT_ORDER_ID)
-                .price(1)
+                .price(BigDecimal.ONE)
                 .quantityToBuyOrSell(1)
                 .tag(TAG)
                 .user(user)
@@ -81,7 +82,7 @@ class TradeServiceImplTest {
                 .instrumentId(INST_ID)
                 .orderId(ORDER_ID)
                 .clientOrderId(CLIENT_ORDER_ID)
-                .price(1)
+                .price(BigDecimal.ONE)
                 .quantityToBuyOrSell(1)
                 .tag(TAG)
                 .user(user)
@@ -94,7 +95,7 @@ class TradeServiceImplTest {
     }
 
     @Test
-    void shouldReturnOrderDetails() {
+    void shouldReturnOrderDetailsByOrderId() {
         OrderDetailsResponseDTO orderDetailsResponseDTO = getOrderDetailsResponseDTO();
         User user = getUser();
         Order order = Order.builder()
@@ -105,20 +106,49 @@ class TradeServiceImplTest {
         when(securityService.getUser()).thenReturn(user);
         when(orderService.findOrderByOrderIdAndUserId(ORDER_ID, 1)).thenReturn(order);
         when(orderService.save(order)).thenReturn(order);
-        when(tradeClient.getOrderDetails(any(), any(), any(), any())).thenReturn(orderDetailsResponseDTO);
+        when(tradeClient.getOrderDetailsByOrderId(any(), any(), any())).thenReturn(orderDetailsResponseDTO);
 
-        GetOrderDetailsDTO result = tradeService.getOrderDetails(INST_ID, ORDER_ID, CLIENT_ORDER_ID);
+        GetOrderDetailsDTO result = tradeService.getOrderDetails(INST_ID, ORDER_ID, null);
 
         assertEquals(result.getId(), 1);
         verify(orderService).findOrderByOrderIdAndUserId(ORDER_ID, 1);
         verify(securityService).getUser();
         verify(orderService, times(1)).findOrderByOrderIdAndUserId(ORDER_ID, 1);
-        verify(tradeClient, times(1)).getOrderDetails(any(), any(), any(), any());
+        verify(tradeClient, times(1)).getOrderDetailsByOrderId(any(), any(), any());
     }
 
     @Test
-    void shouldThrowExWhenFeignRequestGetDetails() {
-        when(tradeClient.getOrderDetails(any(), any(), any(), any())).thenThrow(FeignException.class);
+    void shouldThrowExWhenFeignRequestGetDetailsByOrId() {
+        when(tradeClient.getOrderDetailsByOrderId(any(), any(), any())).thenThrow(FeignException.class);
+        assertThrows(BusinessException.class, () -> tradeService.getOrderDetails(INST_ID, ORDER_ID, CLIENT_ORDER_ID));
+    }
+
+    @Test
+    void shouldReturnOrderDetailsByClientId() {
+        OrderDetailsResponseDTO orderDetailsResponseDTO = getOrderDetailsResponseDTO();
+        User user = getUser();
+        Order order = Order.builder()
+                .user(user)
+                .id(1)
+                .build();
+
+        when(securityService.getUser()).thenReturn(user);
+        when(orderService.findOrderByOrderIdAndUserId(ORDER_ID, 1)).thenReturn(order);
+        when(orderService.save(order)).thenReturn(order);
+        when(tradeClient.getOrderDetailsByClientOrderId(any(), any(), any())).thenReturn(orderDetailsResponseDTO);
+
+        GetOrderDetailsDTO result = tradeService.getOrderDetails(INST_ID, null, CLIENT_ORDER_ID);
+
+        assertEquals(result.getId(), 1);
+        verify(orderService).findOrderByOrderIdAndUserId(ORDER_ID, 1);
+        verify(securityService).getUser();
+        verify(orderService, times(1)).findOrderByOrderIdAndUserId(ORDER_ID, 1);
+        verify(tradeClient, times(1)).getOrderDetailsByClientOrderId(any(), any(), any());
+    }
+
+    @Test
+    void shouldThrowExWhenFeignRequestGetDetailsByClOrId() {
+        when(tradeClient.getOrderDetailsByOrderId(any(), any(), any())).thenThrow(FeignException.class);
         assertThrows(BusinessException.class, () -> tradeService.getOrderDetails(INST_ID, ORDER_ID, CLIENT_ORDER_ID));
     }
 
@@ -180,7 +210,7 @@ class TradeServiceImplTest {
                 .id(1)
                 .orderId(ORDER_ID)
                 .requestId(REQ_ID)
-                .price(1)
+                .price(BigDecimal.ONE)
                 .build();
 
         when(securityService.getUser()).thenReturn(user);
@@ -222,7 +252,7 @@ class TradeServiceImplTest {
     void shouldThrowExWhenPriceAndQuantityNullAmenOrder() {
         AmendOrderRequestDTO amendOrderRequestDTO = getAmendOrderRequestDTO();
         amendOrderRequestDTO.setNewSz("");
-        amendOrderRequestDTO.setNewPx(0);
+        amendOrderRequestDTO.setNewPx(BigDecimal.ZERO);
         User user = getUser();
         when(securityService.getUser()).thenReturn(user);
 
@@ -232,7 +262,7 @@ class TradeServiceImplTest {
     private PlaceOrderRequestDTO getPlaceOrderRequestDTO() {
         return PlaceOrderRequestDTO.builder()
                 .instId(INST_ID)
-                .px("1")
+                .px(BigDecimal.ONE)
                 .sz("1")
                 .build();
     }
@@ -283,7 +313,7 @@ class TradeServiceImplTest {
                 .ordId(ORDER_ID)
                 .clOrdId(CLIENT_ORDER_ID)
                 .instId(INST_ID)
-                .newPx(1)
+                .newPx(BigDecimal.ONE)
                 .reqId("1")
                 .newSz("1")
                 .build();

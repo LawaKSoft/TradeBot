@@ -3,6 +3,8 @@ package by.lawaksoft.tradebot.dto.order;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 @Builder
 @Getter
 public class GetOrderDetailsDTO {
@@ -14,7 +16,7 @@ public class GetOrderDetailsDTO {
     private String orderId;
     private String clientOrderId;
     private String tag;
-    private double price;
+    private BigDecimal price;
     private double quantityToBuyOrSell;
     private double profitAndLoss;
     private String orderType;

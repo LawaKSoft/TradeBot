@@ -15,7 +15,7 @@ import by.lawaksoft.tradebot.entity.User;
 import by.lawaksoft.tradebot.entity.enums.Status;
 import by.lawaksoft.tradebot.exception.dto.BusinessException;
 import by.lawaksoft.tradebot.exception.dto.enums.ERROR_MESSAGE;
-import by.lawaksoft.tradebot.service.api.trade.TradeService;
+import by.lawaksoft.tradebot.service.api.trade.ApiTradeService;
 import by.lawaksoft.tradebot.service.entity.TradeOrderService;
 import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
 import by.lawaksoft.tradebot.util.TimeManager;
@@ -23,12 +23,13 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import static by.lawaksoft.tradebot.mapper.OrderMapper.*;
 
 @Service
-public class TradeServiceImpl implements TradeService {
+public class ApiTradeServiceImpl implements ApiTradeService {
 
     private final TradeOrderService orderService;
     private final CreateTradeMessageService createTradeMessageService;
@@ -37,7 +38,8 @@ public class TradeServiceImpl implements TradeService {
     private final TradeClient tradeClient;
 
     @Autowired
-    public TradeServiceImpl(TradeOrderService orderService, CreateTradeMessageService createTradeMessageService, OkxConfigSecurity okxConfigSecurity, SecurityService securityService, TradeClient tradeClient) {
+    public ApiTradeServiceImpl(TradeOrderService orderService, CreateTradeMessageService createTradeMessageService,
+                               OkxConfigSecurity okxConfigSecurity, SecurityService securityService, TradeClient tradeClient) {
         this.orderService = orderService;
         this.createTradeMessageService = createTradeMessageService;
         this.okxConfigSecurity = okxConfigSecurity;
@@ -73,14 +75,19 @@ public class TradeServiceImpl implements TradeService {
     public GetOrderDetailsDTO getOrderDetails(String instrumentId, String orderId, String clientOrderId) {
         User user = securityService.getUser();
 
-        if (orderId.isBlank() && clientOrderId.isBlank()) {
+        if ((orderId == null || orderId.isBlank()) && (clientOrderId == null || clientOrderId.isBlank())) {
             throw new BusinessException("Order id and client order id cant be empty");
         }
+
         OrderDetailsResponseDTO orderDetailsResponseDTO;
         try {
-            orderDetailsResponseDTO = tradeClient.getOrderDetails(instrumentId, orderId, clientOrderId,
-                                                                        getHeaderForOrderDetails(instrumentId, orderId,
-                                                                                clientOrderId, TimeManager.getTimestampForOkx()));
+            if (orderId != null) {
+                orderDetailsResponseDTO = tradeClient.getOrderDetailsByOrderId(instrumentId, orderId,
+                        getHeaderForOrderDetailsByOrderId(instrumentId, orderId, TimeManager.getTimestampForOkx()));
+            } else {
+                orderDetailsResponseDTO = tradeClient.getOrderDetailsByClientOrderId(instrumentId, clientOrderId,
+                        getHeaderForOrderDetailsByClientOrderId(instrumentId, clientOrderId, TimeManager.getTimestampForOkx()));
+            }
         } catch (FeignException e) {
             throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
         }
@@ -106,7 +113,7 @@ public class TradeServiceImpl implements TradeService {
         OrderResponseDTO orderResponseDTO;
         try {
             orderResponseDTO = tradeClient.cancelOrder(cancelOrderRequestDTO, getHeaderForCancelOrder(cancelOrderRequestDTO,
-                                                                                                        TimeManager.getTimestampForOkx()));
+                    TimeManager.getTimestampForOkx()));
         } catch (FeignException e) {
             throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
         }
@@ -125,7 +132,7 @@ public class TradeServiceImpl implements TradeService {
         OrderResponseDTO orderResponseDTO;
         try {
             orderResponseDTO = tradeClient.amendOrder(amendOrderRequestDTO, getHeaderForAmendOrder(amendOrderRequestDTO,
-                                                                                                    TimeManager.getTimestampForOkx()));
+                    TimeManager.getTimestampForOkx()));
         } catch (FeignException e) {
             throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
         }
@@ -149,8 +156,13 @@ public class TradeServiceImpl implements TradeService {
         return okxConfigSecurity.getHeader(message, timestamp);
     }
 
-    private Map<String, String> getHeaderForOrderDetails(String instrumentId, String orderId, String clientOrderId, String timestamp) {
-        String message = createTradeMessageService.getOrderDetailsMessage(instrumentId, orderId, clientOrderId, timestamp);
+    private Map<String, String> getHeaderForOrderDetailsByOrderId(String instrumentId, String orderId, String timestamp) {
+        String message = createTradeMessageService.getOrderDetailsByOrderIdMessage(instrumentId, orderId, timestamp);
+        return okxConfigSecurity.getHeader(message, timestamp);
+    }
+
+    private Map<String, String> getHeaderForOrderDetailsByClientOrderId(String instrumentId, String clientOrderId, String timestamp) {
+        String message = createTradeMessageService.getOrderDetailsByClientOrderIdMessage(instrumentId, clientOrderId, timestamp);
         return okxConfigSecurity.getHeader(message, timestamp);
     }
 
@@ -164,7 +176,7 @@ public class TradeServiceImpl implements TradeService {
                 (amendOrderRequestDTO.getOrdId() == null || amendOrderRequestDTO.getOrdId().isBlank())) {
             throw new BusinessException("Order id and client order id cant be empty");
         }
-        if ((amendOrderRequestDTO.getNewSz() == null || amendOrderRequestDTO.getNewSz().isBlank()) && amendOrderRequestDTO.getNewPx() == 0) {
+        if ((amendOrderRequestDTO.getNewSz() == null || amendOrderRequestDTO.getNewSz().isBlank()) && amendOrderRequestDTO.getNewPx().signum() == 0) {
             throw new BusinessException("New quantity and new price cant be empty");
         }
     }

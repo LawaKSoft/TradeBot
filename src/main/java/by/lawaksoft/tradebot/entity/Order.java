@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 
 @Data
 @Builder
@@ -24,7 +26,7 @@ public class Order {
     private String orderId;
     private String clientOrderId;
     private String tag;
-    private double price;
+    private BigDecimal price;
     private double quantityToBuyOrSell;
     private double profitAndLoss;
     private String orderType;

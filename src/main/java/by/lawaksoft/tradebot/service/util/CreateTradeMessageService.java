@@ -8,7 +8,9 @@ public interface CreateTradeMessageService {
 
     String placeOrderMessage(PlaceOrderRequestDTO placeOrderRequestDTO, String timestamp);
 
-    String getOrderDetailsMessage(String instrumentId, String orderId, String clientOrderId, String timestamp);
+    String getOrderDetailsByOrderIdMessage(String instrumentId, String orderId, String timestamp);
+
+    String getOrderDetailsByClientOrderIdMessage(String instrumentId, String clientOrderId, String timestamp);
 
     String cancelOrderMessage(CancelOrderRequestDTO cancelOrderRequestDTO, String timestamp);
 
