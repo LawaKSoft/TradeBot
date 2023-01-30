@@ -1,12 +1,14 @@
 package by.lawaksoft.tradebot.config;
 
-import by.lawaksoft.tradebot.entity.APIConfiguration;
+import by.lawaksoft.tradebot.dto.config.APIConfiguration;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AppConfiguration {
+@EnableFeignClients
+public class OkxApiConfiguration {
 
     @Bean
     public APIConfiguration apiConfiguration(@Value("${API_KEY}")    String apiKey,

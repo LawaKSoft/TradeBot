@@ -1,7 +1,7 @@
 package by.lawaksoft.tradebot.util;
 
-import by.lawaksoft.tradebot.exception.entity.BusinessException;
-import by.lawaksoft.tradebot.exception.entity.enums.ERROR_CODE;
+import by.lawaksoft.tradebot.exception.dto.BusinessException;
+import by.lawaksoft.tradebot.exception.dto.enums.ERROR_MESSAGE;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.crypto.Mac;
@@ -22,7 +22,7 @@ public class Encoder {
             return Base64.encodeBase64String(sha256Hmac.doFinal(message.getBytes(StandardCharsets.UTF_8)));
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             if (e.getCause() instanceof NoSuchAlgorithmException) {
-                throw new BusinessException(String.format("Bad algorithm %s", ALGORITHM), ERROR_CODE.BAD_ALGORITHM);
+                throw new BusinessException(String.format("Bad algorithm %s", ALGORITHM), ERROR_MESSAGE.BAD_ALGORITHM);
             }
             if (e.getCause() instanceof InvalidKeyException) {
                 throw new BusinessException("Bad secret key");

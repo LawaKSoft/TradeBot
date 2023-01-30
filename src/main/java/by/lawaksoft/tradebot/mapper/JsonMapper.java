@@ -1,10 +1,9 @@
 package by.lawaksoft.tradebot.mapper;
 
-import by.lawaksoft.tradebot.exception.entity.BusinessException;
-import by.lawaksoft.tradebot.exception.entity.enums.ERROR_CODE;
+import by.lawaksoft.tradebot.exception.dto.BusinessException;
+import by.lawaksoft.tradebot.exception.dto.enums.ERROR_MESSAGE;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class JsonMapper {
 
@@ -13,7 +12,7 @@ public class JsonMapper {
         try {
             return mapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {
-            throw new BusinessException(String.format("Cant map object to json %s", o.getClass()), ERROR_CODE.CANT_MAP_OBJECT_TO_JSON);
+            throw new BusinessException(String.format("Cant map object to json %s", o.getClass()), ERROR_MESSAGE.CANT_MAP_OBJECT_TO_JSON);
         }
     }
 }

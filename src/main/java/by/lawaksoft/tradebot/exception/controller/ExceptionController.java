@@ -1,7 +1,7 @@
-package by.lawaksoft.tradebot.exception;
+package by.lawaksoft.tradebot.exception.controller;
 
 
-import by.lawaksoft.tradebot.exception.entity.BusinessException;
+import by.lawaksoft.tradebot.exception.dto.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class ExceptionController {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleMethodFamilyNotFoundException(BusinessException businessException){
-        if (businessException.getError_code() == null && businessException.getHttpStatus() == HttpStatus.OK) {
+        if (businessException.getError_MESSAGE() == null && businessException.getHttpStatus() == HttpStatus.OK) {
             log.warn(BAD_REQUEST + " by {}", businessException.getMessage());
 
             return new ResponseEntity<>(businessException.getMessage(), BAD_REQUEST);
@@ -25,10 +25,10 @@ public class ExceptionController {
         if (businessException.getHttpStatus() == HttpStatus.OK) {
             log.warn(BAD_REQUEST + " by {}", businessException.getMessage());
 
-            return new ResponseEntity<>(businessException.getError_code().getMessage(), BAD_REQUEST);
+            return new ResponseEntity<>(businessException.getError_MESSAGE().getMessage(), BAD_REQUEST);
         }
 
-        if(businessException.getError_code() == null) {
+        if(businessException.getError_MESSAGE() == null) {
             log.warn(businessException.getHttpStatus() + " by {}", businessException.getMessage());
 
             return new ResponseEntity<>(businessException.getMessage(), businessException.getHttpStatus());
@@ -36,6 +36,6 @@ public class ExceptionController {
 
         log.warn(businessException.getHttpStatus() + " by {}", businessException.getMessage());
 
-        return new ResponseEntity<>(businessException.getError_code().getMessage(), businessException.getHttpStatus());
+        return new ResponseEntity<>(businessException.getError_MESSAGE().getMessage(), businessException.getHttpStatus());
     }
 }

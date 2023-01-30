@@ -1,4 +1,4 @@
-package by.lawaksoft.tradebot.entity;
+package by.lawaksoft.tradebot.dto.config;
 
 import lombok.*;
 

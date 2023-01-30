@@ -1,6 +1,6 @@
-package by.lawaksoft.tradebot.exception.entity.enums;
+package by.lawaksoft.tradebot.exception.dto.enums;
 
-public enum ERROR_CODE {
+public enum ERROR_MESSAGE {
 
     USER_NOT_FOUND("User not found"),
     ORDER_NOT_FOUND("Order not found"),
@@ -10,7 +10,7 @@ public enum ERROR_CODE {
 
     private String message;
 
-    ERROR_CODE(String message) {
+    ERROR_MESSAGE(String message) {
         this.message = message;
     }
 

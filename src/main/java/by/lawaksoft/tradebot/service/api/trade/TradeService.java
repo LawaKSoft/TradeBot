@@ -1,4 +1,4 @@
-package by.lawaksoft.tradebot.service.trade;
+package by.lawaksoft.tradebot.service.api.trade;
 
 import by.lawaksoft.tradebot.dto.amend_order.AmendOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;

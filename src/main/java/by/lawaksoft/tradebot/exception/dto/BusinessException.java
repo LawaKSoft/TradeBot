@@ -1,6 +1,6 @@
-package by.lawaksoft.tradebot.exception.entity;
+package by.lawaksoft.tradebot.exception.dto;
 
-import by.lawaksoft.tradebot.exception.entity.enums.ERROR_CODE;
+import by.lawaksoft.tradebot.exception.dto.enums.ERROR_MESSAGE;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 public class BusinessException extends RuntimeException{
 
-    private ERROR_CODE error_code;
+    private ERROR_MESSAGE error_MESSAGE;
     private HttpStatus httpStatus = HttpStatus.OK;
 
     public BusinessException(String message) {
@@ -23,14 +23,14 @@ public class BusinessException extends RuntimeException{
         this.httpStatus = httpStatus;
     }
 
-    public BusinessException(String message, ERROR_CODE error_code) {
+    public BusinessException(String message, ERROR_MESSAGE error_MESSAGE) {
         super(message);
-        this.error_code = error_code;
+        this.error_MESSAGE = error_MESSAGE;
     }
 
-    public BusinessException(String message, ERROR_CODE error_code, HttpStatus httpStatus) {
+    public BusinessException(String message, ERROR_MESSAGE error_MESSAGE, HttpStatus httpStatus) {
         super(message);
-        this.error_code = error_code;
+        this.error_MESSAGE = error_MESSAGE;
         this.httpStatus = httpStatus;
     }
 }

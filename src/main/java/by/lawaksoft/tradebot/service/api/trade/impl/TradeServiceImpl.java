@@ -1,4 +1,4 @@
-package by.lawaksoft.tradebot.service.trade.impl;
+package by.lawaksoft.tradebot.service.api.trade.impl;
 
 import by.lawaksoft.tradebot.client.TradeClient;
 import by.lawaksoft.tradebot.config.security.OkxConfigSecurity;
@@ -13,10 +13,10 @@ import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.entity.Order;
 import by.lawaksoft.tradebot.entity.User;
 import by.lawaksoft.tradebot.entity.enums.Status;
-import by.lawaksoft.tradebot.exception.entity.BusinessException;
-import by.lawaksoft.tradebot.exception.entity.enums.ERROR_CODE;
-import by.lawaksoft.tradebot.service.entity.OrderService;
-import by.lawaksoft.tradebot.service.trade.TradeService;
+import by.lawaksoft.tradebot.exception.dto.BusinessException;
+import by.lawaksoft.tradebot.exception.dto.enums.ERROR_MESSAGE;
+import by.lawaksoft.tradebot.service.api.trade.TradeService;
+import by.lawaksoft.tradebot.service.entity.TradeOrderService;
 import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
 import by.lawaksoft.tradebot.util.TimeManager;
 import feign.FeignException;
@@ -30,19 +30,19 @@ import static by.lawaksoft.tradebot.mapper.OrderMapper.*;
 @Service
 public class TradeServiceImpl implements TradeService {
 
-    private final OrderService orderService;
+    private final TradeOrderService orderService;
     private final CreateTradeMessageService createTradeMessageService;
     private final OkxConfigSecurity okxConfigSecurity;
     private final SecurityService securityService;
+    private final TradeClient tradeClient;
 
     @Autowired
-    private TradeClient tradeClient;
-
-    public TradeServiceImpl(OrderService orderService, CreateTradeMessageService createTradeMessageService, OkxConfigSecurity okxConfigSecurity, SecurityService securityService) {
+    public TradeServiceImpl(TradeOrderService orderService, CreateTradeMessageService createTradeMessageService, OkxConfigSecurity okxConfigSecurity, SecurityService securityService, TradeClient tradeClient) {
         this.orderService = orderService;
         this.createTradeMessageService = createTradeMessageService;
         this.okxConfigSecurity = okxConfigSecurity;
         this.securityService = securityService;
+        this.tradeClient = tradeClient;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class TradeServiceImpl implements TradeService {
             orderResponseDTO = tradeClient.placeOrder(placeOrderRequestDTO, getHeaderForPlaceOrder(placeOrderRequestDTO,
                     TimeManager.getTimestampForOkx()));
         } catch (FeignException e) {
-            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_CODE.BAD_REQUEST);
+            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
         }
 
         orderMap.setClientOrderId(orderResponseDTO.getData().get(0).getClOrdId());
@@ -82,7 +82,7 @@ public class TradeServiceImpl implements TradeService {
                                                                         getHeaderForOrderDetails(instrumentId, orderId,
                                                                                 clientOrderId, TimeManager.getTimestampForOkx()));
         } catch (FeignException e) {
-            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_CODE.BAD_REQUEST);
+            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
         }
 
         Order orderDb = orderService.findOrderByOrderIdAndUserId(orderDetailsResponseDTO.getOrdId(), user.getId());
@@ -108,7 +108,7 @@ public class TradeServiceImpl implements TradeService {
             orderResponseDTO = tradeClient.cancelOrder(cancelOrderRequestDTO, getHeaderForCancelOrder(cancelOrderRequestDTO,
                                                                                                         TimeManager.getTimestampForOkx()));
         } catch (FeignException e) {
-            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_CODE.BAD_REQUEST);
+            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
         }
 
         Order order = orderService.findOrderByOrderIdAndUserId(orderResponseDTO.getData().get(0).getOrdId(), user.getId());
@@ -127,7 +127,7 @@ public class TradeServiceImpl implements TradeService {
             orderResponseDTO = tradeClient.amendOrder(amendOrderRequestDTO, getHeaderForAmendOrder(amendOrderRequestDTO,
                                                                                                     TimeManager.getTimestampForOkx()));
         } catch (FeignException e) {
-            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_CODE.BAD_REQUEST);
+            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
         }
 
         Order orderDb = orderService.findOrderByOrderIdAndUserId(orderResponseDTO.getData().get(0).getOrdId(), user.getId());

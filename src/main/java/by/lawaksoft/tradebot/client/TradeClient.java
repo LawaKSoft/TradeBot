@@ -5,29 +5,31 @@ import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.OrderDetailsResponseDTO;
 import by.lawaksoft.tradebot.dto.order.OrderResponseDTO;
 import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@FeignClient(name = ClientNavigation.TRADE,  url = ClientNavigation.TRADE_URL)
+@FeignClient(name = "${TRADE}",  url = "${TRADE_URL}")
 public interface TradeClient {
 
-    @GetMapping(ClientNavigation.ORDER)
-    OrderDetailsResponseDTO getOrderDetails(@RequestParam(ClientNavigation.INSTRUMENT_ID) String instId,
-                                            @RequestParam(ClientNavigation.ORDER_ID) String orderId,
-                                            @RequestParam(value = ClientNavigation.CLIENT_ORDER_ID, required = false) String clientOrderId,
+    @GetMapping("${ORDER}")
+    OrderDetailsResponseDTO getOrderDetails(@RequestParam("${INSTRUMENT_ID}") String instId,
+                                            @RequestParam("${ORDER_ID}") String orderId,
+                                            @RequestParam(value = "${CLIENT_ORDER_ID}", required = false) String clientOrderId,
                                             @RequestHeader Map<String, String> header);
 
-    @PostMapping(ClientNavigation.ORDER)
+    @PostMapping("${ORDER}")
     OrderResponseDTO placeOrder(@RequestBody PlaceOrderRequestDTO placeOrderRequestDTO,
                                 @RequestHeader Map<String, String> header);
 
-    @PostMapping(ClientNavigation.CANCEL_ORDER)
+    @PostMapping("${CANCEL_ORDER}")
     OrderResponseDTO cancelOrder(@RequestBody CancelOrderRequestDTO cancelOrderRequestDTO,
                                  @RequestHeader Map<String, String> header);
 
-    @PostMapping(ClientNavigation.AMEND_ORDER)
+    @PostMapping("${AMEND_ORDER}")
     OrderResponseDTO amendOrder(@RequestBody AmendOrderRequestDTO amendOrderRequestDTO,
                                 @RequestHeader Map<String, String> header);
 }

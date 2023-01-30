@@ -1,12 +1,12 @@
 package by.lawaksoft.tradebot.service.util.impl;
 
-import by.lawaksoft.tradebot.client.ClientNavigation;
 import by.lawaksoft.tradebot.dto.amend_order.AmendOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.entity.enums.Method;
 import by.lawaksoft.tradebot.mapper.JsonMapper;
 import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +16,15 @@ public class CreateTradeMessageServiceImpl implements CreateTradeMessageService 
     private final static String CANCEL_ORDER_PATH = "/api/v5/trade/cancel-order";
     private final static String AMEN_ORDER_PATH = "/api/v5/trade/amend-order";
 
+    @Value("${ORDER_ID}")
+    private String ORDER_ID;
+
+    @Value("${CLIENT_ORDER_ID}")
+    private String CLIENT_ORDER_ID;
+
+    @Value("${INSTRUMENT_ID}")
+    private String INSTRUMENT_ID;
+
     @Override
     public String placeOrderMessage(PlaceOrderRequestDTO placeOrderRequestDTO, String timestamp) {
         return timestamp + Method.POST + ORDER_PATH + JsonMapper.objectToJson(placeOrderRequestDTO);
@@ -23,9 +32,9 @@ public class CreateTradeMessageServiceImpl implements CreateTradeMessageService 
 
     @Override
     public String getOrderDetailsMessage(String instrumentId, String orderId, String clientOrderId, String timestamp) {
-        return timestamp + Method.GET + ORDER_PATH + "?" + ClientNavigation.ORDER_ID + "=" + orderId + "&" +
-                                                            ClientNavigation.CLIENT_ORDER_ID + "=" + clientOrderId + "&" +
-                                                            ClientNavigation.INSTRUMENT_ID + "=" + instrumentId;
+        return timestamp + Method.GET + ORDER_PATH + "?" + ORDER_ID + "=" + orderId + "&" +
+                                                            CLIENT_ORDER_ID + "=" + clientOrderId + "&" +
+                                                            INSTRUMENT_ID + "=" + instrumentId;
     }
 
     @Override

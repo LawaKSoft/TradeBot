@@ -2,13 +2,11 @@ package by.lawaksoft.tradebot.service.entity.impl;
 
 import by.lawaksoft.tradebot.entity.Order;
 import by.lawaksoft.tradebot.entity.User;
-import by.lawaksoft.tradebot.exception.entity.BusinessException;
+import by.lawaksoft.tradebot.exception.dto.BusinessException;
 import by.lawaksoft.tradebot.repository.OrderRepository;
-import by.lawaksoft.tradebot.service.entity.OrderService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
@@ -17,10 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class OrderServiceImplTest {
+class TradeTradeOrderServiceImplTest {
 
     @InjectMocks
-    private OrderServiceImpl orderService;
+    private TradeOrderServiceImpl orderService;
 
     @Mock
     private OrderRepository orderRepository;

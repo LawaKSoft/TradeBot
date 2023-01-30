@@ -1,7 +1,6 @@
 package by.lawaksoft.tradebot.service.trade.impl;
 
 import by.lawaksoft.tradebot.client.TradeClient;
-import by.lawaksoft.tradebot.config.security.OkxConfigSecurity;
 import by.lawaksoft.tradebot.config.security.SecurityService;
 import by.lawaksoft.tradebot.dto.amend_order.AmendOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
@@ -10,9 +9,9 @@ import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.entity.Order;
 import by.lawaksoft.tradebot.entity.User;
 import by.lawaksoft.tradebot.entity.enums.Status;
-import by.lawaksoft.tradebot.exception.entity.BusinessException;
-import by.lawaksoft.tradebot.service.entity.OrderService;
-import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
+import by.lawaksoft.tradebot.exception.dto.BusinessException;
+import by.lawaksoft.tradebot.service.api.trade.impl.TradeServiceImpl;
+import by.lawaksoft.tradebot.service.entity.TradeOrderService;
 import feign.FeignException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ class TradeServiceImplTest {
     private TradeServiceImpl tradeService;
 
     @MockBean
-    private OrderService orderService;
+    private TradeOrderService orderService;
     @MockBean
     private TradeClient tradeClient;
     @MockBean
