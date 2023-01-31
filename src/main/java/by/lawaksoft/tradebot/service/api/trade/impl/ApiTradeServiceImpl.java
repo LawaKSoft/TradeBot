@@ -23,7 +23,6 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 import static by.lawaksoft.tradebot.mapper.OrderMapper.*;
@@ -36,6 +35,10 @@ public class ApiTradeServiceImpl implements ApiTradeService {
     private final OkxConfigSecurity okxConfigSecurity;
     private final SecurityService securityService;
     private final TradeClient tradeClient;
+
+    private static final String BAD_FEIGN_REQUEST = "Bad feign request %s";
+    private static final String ORD_N_CLO_IDS_CANT_BE_EMPTY = "Order id and client order id cant be empty";
+    private static final String NEW_QUAN_N_PRICE_CANT_BE_EMPTY = "New quantity and new price cant be empty";
 
     @Autowired
     public ApiTradeServiceImpl(TradeOrderService orderService, CreateTradeMessageService createTradeMessageService,
@@ -58,7 +61,7 @@ public class ApiTradeServiceImpl implements ApiTradeService {
             orderResponseDTO = tradeClient.placeOrder(placeOrderRequestDTO, getHeaderForPlaceOrder(placeOrderRequestDTO,
                     TimeManager.getTimestampForOkx()));
         } catch (FeignException e) {
-            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
+            throw new BusinessException(String.format(BAD_FEIGN_REQUEST, e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
         }
 
         orderMap.setClientOrderId(orderResponseDTO.getData().get(0).getClOrdId());
@@ -76,7 +79,7 @@ public class ApiTradeServiceImpl implements ApiTradeService {
         User user = securityService.getUser();
 
         if ((orderId == null || orderId.isBlank()) && (clientOrderId == null || clientOrderId.isBlank())) {
-            throw new BusinessException("Order id and client order id cant be empty");
+            throw new BusinessException();
         }
 
         OrderDetailsResponseDTO orderDetailsResponseDTO;
@@ -89,7 +92,7 @@ public class ApiTradeServiceImpl implements ApiTradeService {
                         getHeaderForOrderDetailsByClientOrderId(instrumentId, clientOrderId, TimeManager.getTimestampForOkx()));
             }
         } catch (FeignException e) {
-            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
+            throw new BusinessException(String.format(BAD_FEIGN_REQUEST, e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
         }
 
         Order orderDb = orderService.findOrderByOrderIdAndUserId(orderDetailsResponseDTO.getOrdId(), user.getId());
@@ -108,14 +111,14 @@ public class ApiTradeServiceImpl implements ApiTradeService {
         User user = securityService.getUser();
 
         if (cancelOrderRequestDTO.getClOrdId().isBlank() && cancelOrderRequestDTO.getOrdId().isBlank()) {
-            throw new BusinessException("Order id and client order id cant be empty");
+            throw new BusinessException(ORD_N_CLO_IDS_CANT_BE_EMPTY);
         }
         OrderResponseDTO orderResponseDTO;
         try {
             orderResponseDTO = tradeClient.cancelOrder(cancelOrderRequestDTO, getHeaderForCancelOrder(cancelOrderRequestDTO,
                     TimeManager.getTimestampForOkx()));
         } catch (FeignException e) {
-            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
+            throw new BusinessException(String.format(BAD_FEIGN_REQUEST, e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
         }
 
         Order order = orderService.findOrderByOrderIdAndUserId(orderResponseDTO.getData().get(0).getOrdId(), user.getId());
@@ -134,7 +137,7 @@ public class ApiTradeServiceImpl implements ApiTradeService {
             orderResponseDTO = tradeClient.amendOrder(amendOrderRequestDTO, getHeaderForAmendOrder(amendOrderRequestDTO,
                     TimeManager.getTimestampForOkx()));
         } catch (FeignException e) {
-            throw new BusinessException(String.format("Bad feign request %s", e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
+            throw new BusinessException(String.format(BAD_FEIGN_REQUEST, e.getMessage()), ERROR_MESSAGE.BAD_REQUEST);
         }
 
         Order orderDb = orderService.findOrderByOrderIdAndUserId(orderResponseDTO.getData().get(0).getOrdId(), user.getId());
@@ -174,10 +177,10 @@ public class ApiTradeServiceImpl implements ApiTradeService {
     private void checkAmendOrderReqFields(AmendOrderRequestDTO amendOrderRequestDTO) {
         if ((amendOrderRequestDTO.getClOrdId() == null || amendOrderRequestDTO.getClOrdId().isBlank()) &&
                 (amendOrderRequestDTO.getOrdId() == null || amendOrderRequestDTO.getOrdId().isBlank())) {
-            throw new BusinessException("Order id and client order id cant be empty");
+            throw new BusinessException(ORD_N_CLO_IDS_CANT_BE_EMPTY);
         }
         if ((amendOrderRequestDTO.getNewSz() == null || amendOrderRequestDTO.getNewSz().isBlank()) && amendOrderRequestDTO.getNewPx().signum() == 0) {
-            throw new BusinessException("New quantity and new price cant be empty");
+            throw new BusinessException(NEW_QUAN_N_PRICE_CANT_BE_EMPTY);
         }
     }
 }

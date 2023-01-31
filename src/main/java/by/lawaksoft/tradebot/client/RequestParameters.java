@@ -1,7 +1,5 @@
 package by.lawaksoft.tradebot.client;
 
-import org.springframework.beans.factory.annotation.Value;
-
 public interface RequestParameters {
 
     String INSTRUMENT_ID = "instId";

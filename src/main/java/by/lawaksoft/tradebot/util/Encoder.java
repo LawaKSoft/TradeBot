@@ -12,13 +12,17 @@ import java.security.NoSuchAlgorithmException;
 
 public class Encoder {
 
-    private final static String ALGORITHM = "HmacSHA256";
+    private static final String ALGORITHM = "HmacSHA256";
+
+    private Encoder() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static String generateBase64Hash(String message, String secret) {
         try {
             Mac sha256Hmac = Mac.getInstance(ALGORITHM);
-            SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), ALGORITHM);
-            sha256Hmac.init(secret_key);
+            SecretKeySpec secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), ALGORITHM);
+            sha256Hmac.init(secretKey);
             return Base64.encodeBase64String(sha256Hmac.doFinal(message.getBytes(StandardCharsets.UTF_8)));
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             if (e.getCause() instanceof NoSuchAlgorithmException) {

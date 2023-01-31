@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 public class BusinessException extends RuntimeException{
 
-    private ERROR_MESSAGE error_MESSAGE;
+    private ERROR_MESSAGE errorMessage;
     private HttpStatus httpStatus = HttpStatus.OK;
 
     public BusinessException(String message) {
@@ -23,14 +23,14 @@ public class BusinessException extends RuntimeException{
         this.httpStatus = httpStatus;
     }
 
-    public BusinessException(String message, ERROR_MESSAGE error_MESSAGE) {
+    public BusinessException(String message, ERROR_MESSAGE errorMessage) {
         super(message);
-        this.error_MESSAGE = error_MESSAGE;
+        this.errorMessage = errorMessage;
     }
 
-    public BusinessException(String message, ERROR_MESSAGE error_MESSAGE, HttpStatus httpStatus) {
+    public BusinessException(String message, ERROR_MESSAGE errorMessage, HttpStatus httpStatus) {
         super(message);
-        this.error_MESSAGE = error_MESSAGE;
+        this.errorMessage = errorMessage;
         this.httpStatus = httpStatus;
     }
 }

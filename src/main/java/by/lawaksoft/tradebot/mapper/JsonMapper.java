@@ -7,6 +7,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonMapper {
 
+    private JsonMapper() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static String objectToJson(Object o) {
         ObjectMapper mapper = new ObjectMapper();
         try {

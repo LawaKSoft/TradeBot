@@ -67,8 +67,8 @@ class ApiTradeServiceImplTest {
 
         GetOrderResponseDTO getOrderResponseDTO = tradeService.placeOrder(placeOrderRequestDTO);
 
-        assertEquals(getOrderResponseDTO.getOrderId(), ORDER_ID);
-        assertEquals(getOrderResponseDTO.getClientOrderId(), CLIENT_ORDER_ID);
+        assertEquals(ORDER_ID, getOrderResponseDTO.getOrderId());
+        assertEquals(CLIENT_ORDER_ID, getOrderResponseDTO.getClientOrderId());
         verify(orderService, times(1)).save(order);
         verify(tradeClient, times(1)).placeOrder(any(), any());
     }
@@ -110,7 +110,7 @@ class ApiTradeServiceImplTest {
 
         GetOrderDetailsDTO result = tradeService.getOrderDetails(INST_ID, ORDER_ID, null);
 
-        assertEquals(result.getId(), 1);
+        assertEquals(1, result.getId());
         verify(orderService).findOrderByOrderIdAndUserId(ORDER_ID, 1);
         verify(securityService).getUser();
         verify(orderService, times(1)).findOrderByOrderIdAndUserId(ORDER_ID, 1);
@@ -139,7 +139,7 @@ class ApiTradeServiceImplTest {
 
         GetOrderDetailsDTO result = tradeService.getOrderDetails(INST_ID, null, CLIENT_ORDER_ID);
 
-        assertEquals(result.getId(), 1);
+        assertEquals(1, result.getId());
         verify(orderService).findOrderByOrderIdAndUserId(ORDER_ID, 1);
         verify(securityService).getUser();
         verify(orderService, times(1)).findOrderByOrderIdAndUserId(ORDER_ID, 1);
@@ -176,8 +176,8 @@ class ApiTradeServiceImplTest {
 
         GetOrderResponseDTO getOrderResponseDTO = tradeService.cancelOrder(cancelOrderRequestDTO);
 
-        assertEquals(getOrderResponseDTO.getOrderId(), ORDER_ID);
-        assertEquals(getOrderResponseDTO.getId(), 1);
+        assertEquals(ORDER_ID, getOrderResponseDTO.getOrderId());
+        assertEquals(1, getOrderResponseDTO.getId());
         verify(securityService).getUser();
         verify(orderService).findOrderByOrderIdAndUserId(ORDER_ID, 1);
         verify(orderService, times(1)).save(order);
@@ -220,8 +220,8 @@ class ApiTradeServiceImplTest {
 
         GetOrderResponseDTO getOrderResponseDTO = tradeService.amendOrder(amendOrderRequestDTO);
 
-        assertEquals(getOrderResponseDTO.getId(), 1);
-        assertEquals(getOrderResponseDTO.getOrderId(), ORDER_ID);
+        assertEquals(1, getOrderResponseDTO.getId());
+        assertEquals(ORDER_ID, getOrderResponseDTO.getOrderId());
         verify(securityService).getUser();
         verify(tradeClient).amendOrder(any(), any());
         verify(orderService, times(1)).findOrderByOrderIdAndUserId(ORDER_ID, 1);

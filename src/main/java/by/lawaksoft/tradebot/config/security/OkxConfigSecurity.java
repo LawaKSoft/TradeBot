@@ -13,12 +13,12 @@ public class OkxConfigSecurity {
 
     private final APIConfiguration apiConfiguration;
 
-    private final static String KEY = "OK-ACCESS-KEY";
-    private final static String TIMESTAMP = "OK-ACCESS-TIMESTAMP";
-    private final static String SIGN = "OK-ACCESS-SIGN";
-    private final static String PASSPHRASES = "OK-ACCESS-PASSPHRASE";
-    private final static String CONTENT_TYPE = "Content-Type";
-    private final static String JSON = "application/json";
+    private static final String KEY = "OK-ACCESS-KEY";
+    private static final String TIMESTAMP = "OK-ACCESS-TIMESTAMP";
+    private static final String SIGN = "OK-ACCESS-SIGN";
+    private static final String PASSPHRASES = "OK-ACCESS-PASSPHRASE";
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String JSON = "application/json";
 
     @Autowired
     public OkxConfigSecurity(APIConfiguration apiConfiguration) {

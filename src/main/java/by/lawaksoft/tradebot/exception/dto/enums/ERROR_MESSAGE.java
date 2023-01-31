@@ -8,7 +8,7 @@ public enum ERROR_MESSAGE {
     CANT_MAP_OBJECT_TO_JSON("Cant map object to json"),
     BAD_REQUEST("Bed request");
 
-    private String message;
+    private final String message;
 
     ERROR_MESSAGE(String message) {
         this.message = message;

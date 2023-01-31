@@ -6,9 +6,11 @@ import by.lawaksoft.tradebot.dto.order.OrderDetailsResponseDTO;
 import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.entity.Order;
 
-import java.math.BigDecimal;
-
 public class OrderMapper {
+
+    private OrderMapper() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static Order mapPlaceOrderRequestDTOToOrder(PlaceOrderRequestDTO placeOrderRequestDTO) {
         return Order.builder()
