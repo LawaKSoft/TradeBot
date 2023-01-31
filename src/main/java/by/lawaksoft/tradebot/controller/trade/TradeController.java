@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("${TRADE}")
+@RequestMapping("/trade/order")
 public class TradeController {
 
     private final ApiTradeService apiTradeService;
@@ -22,24 +22,24 @@ public class TradeController {
         this.apiTradeService = apiTradeService;
     }
 
-    @PostMapping("${PLACE}")
+    @PostMapping("/place")
     public ResponseEntity<GetOrderResponseDTO> placeOrder(@RequestBody PlaceOrderRequestDTO placeOrderRequestDTO) {
         return ResponseEntity.ok(apiTradeService.placeOrder(placeOrderRequestDTO));
     }
 
-    @GetMapping("${ORDER}")
+    @GetMapping("/details")
     public ResponseEntity<GetOrderDetailsDTO> getOrderDetails(@RequestParam String instrumentId,
                                                               @RequestParam(required = false) String orderId,
                                                               @RequestParam(required = false) String clientOrderId) {
         return ResponseEntity.ok(apiTradeService.getOrderDetails(instrumentId, orderId, clientOrderId));
     }
 
-    @PostMapping("${CANCEL_ORDER}")
+    @PostMapping("/cancel")
     public ResponseEntity<GetOrderResponseDTO> cancelPlaceOrder(@RequestBody CancelOrderRequestDTO cancelOrderRequestDTO) {
         return ResponseEntity.ok(apiTradeService.cancelOrder(cancelOrderRequestDTO));
     }
 
-    @PutMapping("${AMEND_ORDER}")
+    @PutMapping("/amend")
     public ResponseEntity<GetOrderResponseDTO> amendOrder(@RequestBody AmendOrderRequestDTO amendOrderRequestDTO) {
         return ResponseEntity.ok(apiTradeService.amendOrder(amendOrderRequestDTO));
     }

@@ -9,8 +9,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableFeignClients("by.lawaksoft.tradebot.client")
-@ComponentScan("by.lawaksoft.tradebot")
 public class OkxApiConfiguration {
 
     @Bean

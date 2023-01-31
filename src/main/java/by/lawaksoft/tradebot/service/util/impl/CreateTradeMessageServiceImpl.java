@@ -12,9 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CreateTradeMessageServiceImpl implements CreateTradeMessageService {
 
-    private final static String ORDER_PATH = "/api/v5/trade/order";
-    private final static String CANCEL_ORDER_PATH = "/api/v5/trade/cancel-order";
-    private final static String AMEN_ORDER_PATH = "/api/v5/trade/amend-order";
+    @Value("${ORDER_PATH}")
+    private String ORDER_PATH;
+
+    @Value("${CANCEL_ORDER_PATH}")
+    private String CANCEL_ORDER_PATH;
+
+    @Value("${AMEN_ORDER_PATH}")
+    private String AMEN_ORDER_PATH;
 
     @Value("${ORDER_ID}")
     private String ORDER_ID;
