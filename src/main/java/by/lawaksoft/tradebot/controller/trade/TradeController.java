@@ -1,10 +1,10 @@
 package by.lawaksoft.tradebot.controller.trade;
 
-import by.lawaksoft.tradebot.dto.amend_order.AmendOrderRequestDTO;
-import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.amend_order.AmendOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.cancel_order.CancelOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.GetOrderDetailsDTO;
 import by.lawaksoft.tradebot.dto.order.GetOrderResponseDTO;
-import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.service.api.trade.ApiTradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
