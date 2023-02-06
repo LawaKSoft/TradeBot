@@ -38,7 +38,7 @@ public class Currency {
     private String notionalLever;
     private BigDecimal marginFrozenForOpenOrders;
     private int twap;
-    private BigDecimal uTime;
+    private BigDecimal updateTime;
     private BigDecimal sumOfUnrealizedProfitNLoss;
     private BigDecimal liabilitiesDueToUnrealizedLoss;
     private BigDecimal strategyEquity;
