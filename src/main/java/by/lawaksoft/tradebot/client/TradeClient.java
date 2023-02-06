@@ -1,10 +1,10 @@
 package by.lawaksoft.tradebot.client;
 
-import by.lawaksoft.tradebot.dto.amend_order.AmendOrderRequestDTO;
-import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.OrderDetailsResponseDTO;
 import by.lawaksoft.tradebot.dto.order.OrderResponseDTO;
-import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.amend_order.AmendOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.cancel_order.CancelOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.place_order.PlaceOrderRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

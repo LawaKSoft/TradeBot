@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Map;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -15,7 +19,25 @@ public class Balance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
+
+    private BigDecimal adjustedEquity;
+    private BigDecimal initialMarginRequirement;
+    private BigDecimal isolatedMarginEquity;
+    private BigDecimal marginRatio;
+    private BigDecimal maintenanceMarginRequirement;
+    private BigDecimal notionalValueOfPositions;
+    private BigDecimal marginFrozenForOpenOrders;
+    private BigDecimal totalAmountOfEquity;
+    private BigInteger updateTime;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "balance_currency_mapping",
+            joinColumns = {@JoinColumn(name = "balance_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "currency_id", referencedColumnName = "id")})
+    @MapKey(name = "currencyName")
+    private Map<String, Currency> currencyMap;
 
     @OneToOne
     private User user;
