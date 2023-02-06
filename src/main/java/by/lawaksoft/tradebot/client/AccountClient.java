@@ -1,5 +1,6 @@
 package by.lawaksoft.tradebot.client;
 
+import by.lawaksoft.tradebot.dto.account.BalanceDataResponseDTO;
 import by.lawaksoft.tradebot.dto.account.BalanceResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +14,9 @@ import java.util.Map;
 public interface AccountClient {
 
     @GetMapping("${BALANCE}")
-    BalanceResponseDTO getBalance(@RequestHeader Map<String, String> header);
+    BalanceResponseDTO<BalanceDataResponseDTO> getBalance(@RequestHeader Map<String, String> header);
 
     @GetMapping("${BALANCE}")
-    BalanceResponseDTO getBalanceWithCurrencies(@RequestParam(name = "ccy") List<String> currencies,
-                                                @RequestHeader Map<String, String> header);
+    BalanceResponseDTO<BalanceDataResponseDTO> getBalanceWithCurrencies(@RequestParam(name = "ccy") List<String> currencies,
+                                                                        @RequestHeader Map<String, String> header);
 }
