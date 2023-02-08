@@ -1,8 +1,10 @@
 package by.lawaksoft.tradebot.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import org.springframework.lang.NonNull;
 
+@Getter
 public class TickerFilterDto {
 
     @NonNull
@@ -15,17 +17,4 @@ public class TickerFilterDto {
         this.underlying = underlying;
         this.instrumentFamily = instrumentFamily;
     }
-
-    public String getInstrumentType() {
-        return instrumentType;
-    }
-
-    public String getUnderlying() {
-        return underlying;
-    }
-
-    public String getInstrumentFamily() {
-        return instrumentFamily;
-    }
-
 }

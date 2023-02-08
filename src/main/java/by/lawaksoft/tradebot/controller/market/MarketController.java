@@ -1,7 +1,5 @@
 package by.lawaksoft.tradebot.controller.market;
 
-import by.lawaksoft.tradebot.client.ClientNavigation;
-import by.lawaksoft.tradebot.controller.Navigation;
 import by.lawaksoft.tradebot.dto.model.market.CandlestickDto;
 import by.lawaksoft.tradebot.dto.model.market.TickerDto;
 import by.lawaksoft.tradebot.dto.request.CandlesticksFilterDto;
@@ -17,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(Navigation.MARKET)
+@RequestMapping("/market")
 public class MarketController {
 
     private final MarketService marketService;
@@ -27,14 +25,14 @@ public class MarketController {
         this.marketService = marketService;
     }
 
-    @GetMapping(Navigation.TICKERS)
-    public ResponseEntity<TickerDto> getTickers(@RequestParam(ClientNavigation.INSTRUMENT_ID) String instrumentId) {
+    @GetMapping("/ticker")
+    public ResponseEntity<TickerDto> getTicker(@RequestParam("/instId") String instrumentId) {
 
         var ticker = marketService.getTickers(instrumentId);
         return ResponseEntity.ok(ticker);
     }
 
-    @GetMapping(value = Navigation.CANDLES)
+    @GetMapping(value = "/candles")
     public ResponseEntity<List<CandlestickDto>> getCandlesticks(@RequestBody CandlesticksFilterDto filterDto) {
 
         var candlesticks = marketService.getCandlesticks(filterDto);

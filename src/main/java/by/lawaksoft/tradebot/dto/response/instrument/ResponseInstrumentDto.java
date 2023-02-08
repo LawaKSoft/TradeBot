@@ -1,10 +1,11 @@
-package by.lawaksoft.tradebot.dto.response;
+package by.lawaksoft.tradebot.dto.response.instrument;
 
+import by.lawaksoft.tradebot.dto.response.ResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class ResponseInstrumentDto extends ResponseDto{
+public class ResponseInstrumentDto extends ResponseDto {
 
 	private final List<FullInstrumentDto> instrumentDtos;
 

@@ -1,5 +1,6 @@
-package by.lawaksoft.tradebot.dto.response;
+package by.lawaksoft.tradebot.dto.response.ticker;
 
+import by.lawaksoft.tradebot.dto.response.ResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

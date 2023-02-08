@@ -1,10 +1,13 @@
-package by.lawaksoft.tradebot.dto.response;
+package by.lawaksoft.tradebot.dto.response.candlestick;
 
+import by.lawaksoft.tradebot.dto.response.ResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.util.List;
 
-public class ResponseCandlestickDto extends ResponseDto{
+@Getter
+public class ResponseCandlestickDto extends ResponseDto {
 
 	private final List<String[]> candlesticks;
 
@@ -12,10 +15,5 @@ public class ResponseCandlestickDto extends ResponseDto{
 
 		super(code, message);
 		this.candlesticks = candlesticks;
-	}
-
-	public List<String[]> getCandlesticks() {
-
-		return candlesticks;
 	}
 }

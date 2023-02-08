@@ -1,8 +1,10 @@
 package by.lawaksoft.tradebot.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import org.springframework.lang.NonNull;
 
+@Getter
 public class InstrumentsFilterDto {
 
 	@NonNull
@@ -18,26 +20,5 @@ public class InstrumentsFilterDto {
 		this.uly = uly;
 		this.instFamily = instFamily;
 		this.instId = instId;
-	}
-
-	@NonNull
-	public String getInstType() {
-
-		return instType;
-	}
-
-	public String getUly() {
-
-		return uly;
-	}
-
-	public String getInstFamily() {
-
-		return instFamily;
-	}
-
-	public String getInstId() {
-
-		return instId;
 	}
 }

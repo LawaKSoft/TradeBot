@@ -3,64 +3,67 @@ package by.lawaksoft.tradebot.mapper;
 import by.lawaksoft.tradebot.dto.model.market.CandlestickDto;
 import by.lawaksoft.tradebot.dto.model.publicdata.InstrumentDto;
 import by.lawaksoft.tradebot.dto.model.market.TickerDto;
-import by.lawaksoft.tradebot.dto.model.builder.CandlestickBuilderDto;
-import by.lawaksoft.tradebot.dto.model.builder.InstrumentBuilderDto;
-import by.lawaksoft.tradebot.dto.model.builder.TickerBuilderDto;
-import by.lawaksoft.tradebot.dto.response.FullInstrumentDto;
-import by.lawaksoft.tradebot.dto.response.FullTickerDto;
+import by.lawaksoft.tradebot.dto.response.instrument.FullInstrumentDto;
+import by.lawaksoft.tradebot.dto.response.ticker.FullTickerDto;
 
-public final class DtoMapper {
+import java.math.BigDecimal;
+
+public class DtoMapper {
+
+	private DtoMapper() {
+
+	}
 
 	public static TickerDto toTickerDto(FullTickerDto fullTickerDto) {
 
-		return TickerBuilderDto.newBuilder()
+		return TickerDto.builder()
 				.instrumentType(fullTickerDto.getInstrumentType())
 				.instrumentId(fullTickerDto.getInstrumentId())
-				.lastPrice(Double.parseDouble(fullTickerDto.getLastPrice()))
-				.lastSize(Double.parseDouble(fullTickerDto.getLastSize()))
-				.askPrice(Double.parseDouble(fullTickerDto.getAskPrice()))
-				.askSize(Double.parseDouble(fullTickerDto.getAskSize()))
-				.bestPrice(Double.parseDouble(fullTickerDto.getBestPrice()))
-				.bestSize(Double.parseDouble(fullTickerDto.getBestSize()))
-				.open24hPrice(Double.parseDouble(fullTickerDto.getOpen24hPrice()))
-				.highest24hPrice(Double.parseDouble(fullTickerDto.getHighest24hPrice()))
-				.lowest24h(Double.parseDouble(fullTickerDto.getLowest24h()))
-				.volume24hCurrency(Double.parseDouble(fullTickerDto.getVolume24hCurrency()))
-				.volume24hContract(Double.parseDouble(fullTickerDto.getVolume24hContract()))
-				.priceUTC0(Double.parseDouble(fullTickerDto.getPriceUTC0()))
-				.priceUTC8(Double.parseDouble(fullTickerDto.getPriceUTC8()))
+				.lastPrice(new BigDecimal(fullTickerDto.getLastPrice()))
+				.lastSize(new BigDecimal(fullTickerDto.getLastSize()))
+				.askPrice(new BigDecimal(fullTickerDto.getAskPrice()))
+				.askSize(new BigDecimal(fullTickerDto.getAskSize()))
+				.bestPrice(new BigDecimal(fullTickerDto.getBestPrice()))
+				.bestSize(new BigDecimal(fullTickerDto.getBestSize()))
+				.open24hPrice(new BigDecimal(fullTickerDto.getOpen24hPrice()))
+				.highest24hPrice(new BigDecimal(fullTickerDto.getHighest24hPrice()))
+				.lowest24h(new BigDecimal(fullTickerDto.getLowest24h()))
+				.volume24hCurrency(new BigDecimal(fullTickerDto.getVolume24hCurrency()))
+				.volume24hContract(new BigDecimal(fullTickerDto.getVolume24hContract()))
+				.priceUTC0(new BigDecimal(fullTickerDto.getPriceUTC0()))
+				.priceUTC8(new BigDecimal(fullTickerDto.getPriceUTC8()))
 				.timestamp(Long.parseLong(fullTickerDto.getTimestamp()))
 				.build();
 	}
 
 	public static CandlestickDto toCandlestickDto(String[] fullCandlestickDto) {
 
-		return CandlestickBuilderDto.newBuilder()
+		return CandlestickDto.builder()
 				.timestamp(Long.parseLong(fullCandlestickDto[0]))
-				.openPrice(Double.parseDouble(fullCandlestickDto[1]))
-				.highestPrice(Double.parseDouble(fullCandlestickDto[2]))
-				.lowestPrice(Double.parseDouble(fullCandlestickDto[3]))
-				.closePrice(Double.parseDouble(fullCandlestickDto[4]))
-				.volumeContract(Double.parseDouble(fullCandlestickDto[5]))
-				.volCurrency(Double.parseDouble(fullCandlestickDto[6]))
-				.volCurrencyQuote(Double.parseDouble(fullCandlestickDto[7]))
+				.openPrice(new BigDecimal(fullCandlestickDto[1]))
+				.highestPrice(new BigDecimal(fullCandlestickDto[2]))
+				.lowestPrice(new BigDecimal(fullCandlestickDto[3]))
+				.closePrice(new BigDecimal(fullCandlestickDto[4]))
+				.volumeContract(new BigDecimal(fullCandlestickDto[5]))
+				.volCurrency(new BigDecimal(fullCandlestickDto[6]))
+				.volCurrencyQuote(new BigDecimal(fullCandlestickDto[7]))
 				.confirm(Boolean.parseBoolean(fullCandlestickDto[8]))
 				.build();
 	}
 
 	public static InstrumentDto toInstrumentDto(FullInstrumentDto fullInstrumentDto) {
 
-		return InstrumentBuilderDto.newBuilder()
+		return InstrumentDto.builder()
 				.instrumentType(fullInstrumentDto.getInstrumentType())
 				.instrumentId(fullInstrumentDto.getInstrumentId())
 				.baseCurrency(fullInstrumentDto.getBaseCurrency())
 				.quoteCurrency(fullInstrumentDto.getQuoteCurrency())
 				.listingTime(Long.parseLong(fullInstrumentDto.getListingTime()))
-				.tickSize(Double.parseDouble(fullInstrumentDto.getTickSize()))
-				.lotSize(Double.parseDouble(fullInstrumentDto.getLotSize()))
-				.minOrderSize(Double.parseDouble(fullInstrumentDto.getMinOrderSize()))
-				.maxLimitSize(Double.parseDouble(fullInstrumentDto.getMaxLimitSize()))
-				.maxMarketSize(Double.parseDouble(fullInstrumentDto.getMaxMarketSize()))
+				.tickSize(new BigDecimal(fullInstrumentDto.getTickSize()))
+				.lotSize(new BigDecimal(fullInstrumentDto.getLotSize()))
+				.minOrderSize(new BigDecimal(fullInstrumentDto.getMinOrderSize()))
+				.maxLimitSize(new BigDecimal(fullInstrumentDto.getMaxLimitSize()))
+				.maxMarketSize(new BigDecimal(fullInstrumentDto.getMaxMarketSize()))
 				.build();
 	}
 }
