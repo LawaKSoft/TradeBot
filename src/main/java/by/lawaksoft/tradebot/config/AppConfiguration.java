@@ -8,5 +8,4 @@ import org.springframework.context.annotation.Configuration;
 @EnableFeignClients("by.lawaksoft.tradebot.client")
 @ComponentScan("by.lawaksoft.tradebot")
 public class AppConfiguration {
-
 }
