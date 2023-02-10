@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "${PUBLIC_DATA}", url = "${PUBLIC_URL}")
 public interface PublicClient {
 
-    @GetMapping(value = "${INSTRUMENT}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @GetMapping(value = "${INSTRUMENTS}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     ResponseInstrumentDto getInstruments(@RequestParam("instType") String instType,
             @RequestParam(value = "uly", required = false) String uly,
             @RequestParam(value = "instFamily", required = false) String instFamily,

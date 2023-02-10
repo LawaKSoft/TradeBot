@@ -1,6 +1,5 @@
 package by.lawaksoft.tradebot.controller.publicdata;
 
-import by.lawaksoft.tradebot.controller.Navigation;
 import by.lawaksoft.tradebot.dto.request.InstrumentsFilterDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ class PublicDataControllerTest {
 	void getInstruments() throws Exception {
 
 		InstrumentsFilterDto filterDto = new InstrumentsFilterDto("SPOT", null, null, "BTC-USDT");
-		this.mockMvc.perform(get(Navigation.PUBLIC + Navigation.INSTRUMENTS)
+		this.mockMvc.perform(get("/public/instruments")
 						.contentType(CONTENT_TYPE)
 						.content(asString(filterDto)))
 				.andExpect(status().isOk())

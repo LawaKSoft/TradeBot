@@ -1,6 +1,5 @@
 package by.lawaksoft.tradebot.controller.market;
 
-import by.lawaksoft.tradebot.controller.Navigation;
 import by.lawaksoft.tradebot.dto.request.CandlesticksFilterDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ class MarketControllerTest {
 	@Test
 	void getTickers() throws Exception {
 
-		this.mockMvc.perform(get(Navigation.MARKET + Navigation.TICKERS)
+		this.mockMvc.perform(get("/market/ticker")
 						.param("instId", "BTC-USD-SWAP"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.instrumentType").value("SWAP"))
@@ -45,7 +44,7 @@ class MarketControllerTest {
 	void getCandlesticks() throws Exception {
 
 		CandlesticksFilterDto filterDto = new CandlesticksFilterDto("BTC-USD-SWAP", null, null, null, "105");
-		this.mockMvc.perform(get(Navigation.MARKET + Navigation.CANDLES)
+		this.mockMvc.perform(get("/market/candles")
 						.contentType(CONTENT_TYPE)
 						.content(asString(filterDto)))
 				.andExpect(status().isOk())

@@ -2,11 +2,13 @@ package by.lawaksoft.tradebot.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.lang.NonNull;
 
 @Getter
 @AllArgsConstructor
+@Builder
 public class CandlesticksFilterDto {
 
 	@NonNull

@@ -26,7 +26,7 @@ public class MarketController {
     }
 
     @GetMapping("/ticker")
-    public ResponseEntity<TickerDto> getTicker(@RequestParam("/instId") String instrumentId) {
+    public ResponseEntity<TickerDto> getTicker(@RequestParam("instId") String instrumentId) {
 
         var ticker = marketService.getTickers(instrumentId);
         return ResponseEntity.ok(ticker);
