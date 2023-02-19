@@ -5,7 +5,6 @@ import by.lawaksoft.tradebot.dto.account.GetBalanceResponseDTO;
 import by.lawaksoft.tradebot.entity.Currency;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 public class AccountMapper {

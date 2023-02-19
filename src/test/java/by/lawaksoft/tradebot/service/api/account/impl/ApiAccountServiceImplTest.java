@@ -27,9 +27,6 @@ class ApiAccountServiceImplTest {
 
     @Autowired
     private ApiAccountServiceImpl apiAccountService;
-
-    @MockBean
-    private SecurityService securityService;
     @MockBean
     private AccountClient accountClient;
 
@@ -39,7 +36,6 @@ class ApiAccountServiceImplTest {
     void shouldGetBalanceWithCurrencies() {
         ResponseDTO<BalanceResponseDTO> balanceDTO = getBalanceDTO();
 
-        when(securityService.getUser()).thenReturn(getUser());
         when(accountClient.getBalanceWithCurrencies(any(), any())).thenReturn(balanceDTO);
         GetBalanceResponseDTO balance = apiAccountService.getBalance(CURRENCIES);
 
@@ -52,7 +48,6 @@ class ApiAccountServiceImplTest {
     void shouldGetBalanceWithOutCurrencies() {
         ResponseDTO<BalanceResponseDTO> balanceDTO = getBalanceDTO();
 
-        when(securityService.getUser()).thenReturn(getUser());
         when(accountClient.getBalance(any())).thenReturn(balanceDTO);
         GetBalanceResponseDTO balance = apiAccountService.getBalance(null);
 
@@ -63,7 +58,6 @@ class ApiAccountServiceImplTest {
 
     @Test
     void shouldThrowExWhenFeignGetBalance() {
-        when(securityService.getUser()).thenReturn(getUser());
         when(accountClient.getBalance(any())).thenThrow(FeignException.class);
 
         assertThrows(BusinessException.class, () -> apiAccountService.getBalance(null));

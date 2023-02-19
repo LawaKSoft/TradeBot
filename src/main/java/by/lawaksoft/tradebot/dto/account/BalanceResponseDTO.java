@@ -1,6 +1,5 @@
 package by.lawaksoft.tradebot.dto.account;
 
-import by.lawaksoft.tradebot.dto.ResponseDTO;
 import lombok.*;
 
 import java.util.List;

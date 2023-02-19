@@ -1,7 +1,5 @@
 package by.lawaksoft.tradebot.controller.account;
 
-import by.lawaksoft.tradebot.dto.account.BalanceDataResponseDTO;
-import by.lawaksoft.tradebot.dto.account.BalanceResponseDTO;
 import by.lawaksoft.tradebot.dto.account.GetBalanceResponseDTO;
 import by.lawaksoft.tradebot.service.api.account.ApiAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
