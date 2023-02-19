@@ -1,4 +1,4 @@
-package by.lawaksoft.tradebot.service.trade.impl;
+package by.lawaksoft.tradebot.service.api.trade.impl;
 
 import by.lawaksoft.tradebot.client.TradeClient;
 import by.lawaksoft.tradebot.config.security.SecurityService;

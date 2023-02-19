@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Data
 @Builder
@@ -27,6 +28,6 @@ public class Currency {
     private BigDecimal equityInUSD;
     private BigDecimal frozenBalance;
     private BigDecimal liabilities;
-    private BigDecimal uTime;
+    private String uTime;
     private BigDecimal strategyEquity;
 }

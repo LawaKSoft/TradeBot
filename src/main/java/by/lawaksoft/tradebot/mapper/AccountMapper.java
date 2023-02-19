@@ -7,7 +7,6 @@ import by.lawaksoft.tradebot.entity.Currency;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AccountMapper {
 
@@ -19,7 +18,7 @@ public class AccountMapper {
         return balanceList.stream()
                 .map(balance -> GetBalanceResponseDTO.builder()
                                 .totalAmountOfEquity(new BigDecimal(balance.getTotalEq()))
-                                .updateTime(new BigInteger(balance.getUTime()))
+                                .updateTime(balance.getUTime())
                                 .currency(balance.getDetails().stream()
                                         .map(currency -> Currency.builder()
                                                 .currencyName(currency.getCcy())
@@ -30,11 +29,11 @@ public class AccountMapper {
                                                 .equityInUSD(new BigDecimal(currency.getEqUsd()))
                                                 .frozenBalance(new BigDecimal(currency.getFrozenBal()))
                                                 .liabilities(new BigDecimal(currency.getLiab()))
-                                                .uTime(new BigDecimal(currency.getUTime()))
+                                                .uTime(balance.getUTime())
                                                 .strategyEquity(new BigDecimal(currency.getStgyEq()))
                                                 .build())
-                                        .collect(Collectors.toList()))
+                                        .toList())
                                 .build())
-                .collect(Collectors.toList());
+                .toList();
     }
 }

@@ -23,7 +23,7 @@ public class Balance {
     private long id;
 
     private BigDecimal totalAmountOfEquity;
-    private BigInteger updateTime;
+    private String updateTime;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "balance_currency_mapping",
