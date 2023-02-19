@@ -21,26 +21,12 @@ public class Currency {
     private long id;
     private String currencyName;
     private String availableBalance;
-    private BigDecimal availableEquity;
     private BigDecimal cashBalance;
-    private BigDecimal crossLiabilities;
     private BigDecimal discountEquity;
     private BigDecimal equity;
     private BigDecimal equityInUSD;
     private BigDecimal frozenBalance;
-    private BigDecimal interest;
-    private BigDecimal isolatedMarginEquity;
-    private BigDecimal isolatedLiabilities;
-    private BigDecimal isolatedUnrealizedProfitNLoss;
     private BigDecimal liabilities;
-    private BigDecimal maxLoan;
-    private String marginRatio;
-    private String notionalLever;
-    private BigDecimal marginFrozenForOpenOrders;
-    private int twap;
-    private BigDecimal updateTime;
-    private BigDecimal sumOfUnrealizedProfitNLoss;
-    private BigDecimal liabilitiesDueToUnrealizedLoss;
+    private BigDecimal uTime;
     private BigDecimal strategyEquity;
-    private String spotInUseAmount;
 }

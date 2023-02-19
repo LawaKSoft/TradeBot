@@ -22,13 +22,6 @@ public class Balance {
     @Column(name = "id")
     private long id;
 
-    private BigDecimal adjustedEquity;
-    private BigDecimal initialMarginRequirement;
-    private BigDecimal isolatedMarginEquity;
-    private BigDecimal marginRatio;
-    private BigDecimal maintenanceMarginRequirement;
-    private BigDecimal notionalValueOfPositions;
-    private BigDecimal marginFrozenForOpenOrders;
     private BigDecimal totalAmountOfEquity;
     private BigInteger updateTime;
 

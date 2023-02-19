@@ -68,8 +68,12 @@ public class CreateTradeMessageServiceImpl implements CreateTradeMessageService 
     @Override
     public String getBalanceWithCurrenciesMessage(List<String> currencies, String timestamp) {
         String message = timestamp + Method.GET + BALANCE_PATH + "?ccy=";
-        for (String currency : currencies) {
-            message = message + currency + ",";
+        for (int i = 0; i < currencies.size(); i++) {
+            if (i == currencies.size() - 1) {
+                message = message + currencies.get(i);
+            } else {
+                message = message + currencies.get(i) + ",";
+            }
         }
         return message;
     }

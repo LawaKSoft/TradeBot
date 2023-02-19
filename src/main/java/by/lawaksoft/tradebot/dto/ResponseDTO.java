@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class ResponseDTO<T> {
+public class ResponseDTO<T> {
 
     private String code;
     private List<T> data;
