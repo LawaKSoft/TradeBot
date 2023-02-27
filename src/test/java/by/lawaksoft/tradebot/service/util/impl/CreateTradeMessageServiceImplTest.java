@@ -1,8 +1,8 @@
 package by.lawaksoft.tradebot.service.util.impl;
 
-import by.lawaksoft.tradebot.dto.amend_order.AmendOrderRequestDTO;
-import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
-import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.amend_order.AmendOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.cancel_order.CancelOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.entity.enums.Method;
 import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
 import by.lawaksoft.tradebot.util.TimeManager;
@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,6 +32,9 @@ class CreateTradeMessageServiceImplTest {
     private final static String ORDER_PATH = "/api/v5/trade/order";
     private final static String CANCEL_ORDER_PATH = "/api/v5/trade/cancel-order";
     private final static String AMEN_ORDER_PATH = "/api/v5/trade/amend-order";
+    private final static String GET_BALANCE_PATH = "/api/v5/account/balance";
+
+
 
     @Test
     void placeOrderMessage() {
@@ -73,6 +77,22 @@ class CreateTradeMessageServiceImplTest {
         String createMessage = createTradeMessageService.amendOrderMessage(amendOrderRequestDTO, timestamp);
         String message = timestamp + Method.POST + AMEN_ORDER_PATH + convertToJson(amendOrderRequestDTO);
         assertEquals(createMessage, message);
+    }
+
+    @Test
+    void getBalanceMessage() {
+        String timestamp = TimeManager.getTimestampForOkx();
+        String createMessage = createTradeMessageService.getBalanceMessage(timestamp);
+        String message = timestamp + Method.GET + GET_BALANCE_PATH;
+        assertEquals(message, createMessage);
+    }
+
+    @Test
+    void getBalanceWithCurrenciesMessage() {
+        String timestamp = TimeManager.getTimestampForOkx();
+        String createMessage = createTradeMessageService.getBalanceWithCurrenciesMessage(List.of("BTC"), timestamp);
+        String message = timestamp + Method.GET + GET_BALANCE_PATH + "?ccy=" + "BTC";
+        assertEquals(message, createMessage);
     }
 
 

@@ -6,7 +6,8 @@ public enum ERROR_MESSAGE {
     ORDER_NOT_FOUND("Order not found"),
     BAD_ALGORITHM("Bad algorithm"),
     CANT_MAP_OBJECT_TO_JSON("Cant map object to json"),
-    BAD_REQUEST("Bed request");
+    BAD_REQUEST("Bed request"),
+    BALANCE_NOT_FOUND("Balance not found");
 
     private final String message;
 

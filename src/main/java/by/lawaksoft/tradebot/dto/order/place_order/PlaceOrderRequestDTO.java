@@ -1,4 +1,4 @@
-package by.lawaksoft.tradebot.dto.place_order;
+package by.lawaksoft.tradebot.dto.order.place_order;
 
 import lombok.*;
 

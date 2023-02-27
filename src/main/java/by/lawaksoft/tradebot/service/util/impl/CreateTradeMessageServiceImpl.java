@@ -1,13 +1,15 @@
 package by.lawaksoft.tradebot.service.util.impl;
 
-import by.lawaksoft.tradebot.dto.amend_order.AmendOrderRequestDTO;
-import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
-import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.amend_order.AmendOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.cancel_order.CancelOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.entity.enums.Method;
 import by.lawaksoft.tradebot.mapper.JsonMapper;
 import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CreateTradeMessageServiceImpl implements CreateTradeMessageService {
@@ -18,8 +20,11 @@ public class CreateTradeMessageServiceImpl implements CreateTradeMessageService 
     @Value("${CANCEL_ORDER_PATH}")
     private String CANCEL_ORDER_PATH;
 
-    @Value("${AMEN_ORDER_PATH}")
+    @Value("${AMEND_ORDER_PATH}")
     private String AMEN_ORDER_PATH;
+
+    @Value("${BALANCE_PATH}")
+    private String BALANCE_PATH;
 
     @Value("${ORDER_ID}")
     private String ORDER_ID;
@@ -53,5 +58,23 @@ public class CreateTradeMessageServiceImpl implements CreateTradeMessageService 
     @Override
     public String amendOrderMessage(AmendOrderRequestDTO amendOrderRequestDTO, String timestamp) {
         return timestamp + Method.POST + AMEN_ORDER_PATH + JsonMapper.objectToJson(amendOrderRequestDTO);
+    }
+
+    @Override
+    public String getBalanceMessage(String timestamp) {
+        return timestamp + Method.GET + BALANCE_PATH;
+    }
+
+    @Override
+    public String getBalanceWithCurrenciesMessage(List<String> currencies, String timestamp) {
+        String message = timestamp + Method.GET + BALANCE_PATH + "?ccy=";
+        for (int i = 0; i < currencies.size(); i++) {
+            if (i == currencies.size() - 1) {
+                message = message + currencies.get(i);
+            } else {
+                message = message + currencies.get(i) + ",";
+            }
+        }
+        return message;
     }
 }

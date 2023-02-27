@@ -1,4 +1,4 @@
-package by.lawaksoft.tradebot.dto.cancel_order;
+package by.lawaksoft.tradebot.dto.order.cancel_order;
 
 import lombok.*;
 

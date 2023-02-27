@@ -1,10 +1,12 @@
 package by.lawaksoft.tradebot.client;
 
-import by.lawaksoft.tradebot.dto.amend_order.AmendOrderRequestDTO;
-import by.lawaksoft.tradebot.dto.cancel_order.CancelOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.ResponseDTO;
+import by.lawaksoft.tradebot.dto.order.OrderDataResponseDTO;
 import by.lawaksoft.tradebot.dto.order.OrderDetailsResponseDTO;
 import by.lawaksoft.tradebot.dto.order.OrderResponseDTO;
-import by.lawaksoft.tradebot.dto.place_order.PlaceOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.amend_order.AmendOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.cancel_order.CancelOrderRequestDTO;
+import by.lawaksoft.tradebot.dto.order.place_order.PlaceOrderRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,14 +26,14 @@ public interface TradeClient {
                                                            @RequestHeader Map<String, String> header);
 
     @PostMapping("${ORDER}")
-    OrderResponseDTO placeOrder(@RequestBody PlaceOrderRequestDTO placeOrderRequestDTO,
-                                @RequestHeader Map<String, String> header);
+    ResponseDTO<OrderDataResponseDTO> placeOrder(@RequestBody PlaceOrderRequestDTO placeOrderRequestDTO,
+                                                 @RequestHeader Map<String, String> header);
 
     @PostMapping("${CANCEL_ORDER}")
-    OrderResponseDTO cancelOrder(@RequestBody CancelOrderRequestDTO cancelOrderRequestDTO,
+    ResponseDTO<OrderDataResponseDTO> cancelOrder(@RequestBody CancelOrderRequestDTO cancelOrderRequestDTO,
                                  @RequestHeader Map<String, String> header);
 
     @PostMapping("${AMEND_ORDER}")
-    OrderResponseDTO amendOrder(@RequestBody AmendOrderRequestDTO amendOrderRequestDTO,
+    ResponseDTO<OrderDataResponseDTO> amendOrder(@RequestBody AmendOrderRequestDTO amendOrderRequestDTO,
                                 @RequestHeader Map<String, String> header);
 }
