@@ -3,12 +3,10 @@ package by.lawaksoft.tradebot.service.api.trade.impl;
 import by.lawaksoft.tradebot.client.TradeClient;
 import by.lawaksoft.tradebot.config.security.OkxConfigSecurity;
 import by.lawaksoft.tradebot.config.security.SecurityService;
+import by.lawaksoft.tradebot.dto.ResponseDTO;
+import by.lawaksoft.tradebot.dto.order.*;
 import by.lawaksoft.tradebot.dto.order.amend_order.AmendOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.cancel_order.CancelOrderRequestDTO;
-import by.lawaksoft.tradebot.dto.order.GetOrderDetailsDTO;
-import by.lawaksoft.tradebot.dto.order.GetOrderResponseDTO;
-import by.lawaksoft.tradebot.dto.order.OrderDetailsResponseDTO;
-import by.lawaksoft.tradebot.dto.order.OrderResponseDTO;
 import by.lawaksoft.tradebot.dto.order.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.entity.Order;
 import by.lawaksoft.tradebot.entity.User;
@@ -56,7 +54,7 @@ public class ApiTradeServiceImpl implements ApiTradeService {
 
         Order orderMap = mapPlaceOrderRequestDTOToOrder(placeOrderRequestDTO);
 
-        OrderResponseDTO orderResponseDTO;
+        ResponseDTO<OrderDataResponseDTO> orderResponseDTO;
         try {
             orderResponseDTO = tradeClient.placeOrder(placeOrderRequestDTO, getHeaderForPlaceOrder(placeOrderRequestDTO,
                     TimeManager.getTimestampForOkx()));
@@ -113,7 +111,7 @@ public class ApiTradeServiceImpl implements ApiTradeService {
         if (cancelOrderRequestDTO.getClOrdId().isBlank() && cancelOrderRequestDTO.getOrdId().isBlank()) {
             throw new BusinessException(ORD_N_CLO_IDS_CANT_BE_EMPTY);
         }
-        OrderResponseDTO orderResponseDTO;
+        ResponseDTO<OrderDataResponseDTO> orderResponseDTO;
         try {
             orderResponseDTO = tradeClient.cancelOrder(cancelOrderRequestDTO, getHeaderForCancelOrder(cancelOrderRequestDTO,
                     TimeManager.getTimestampForOkx()));
@@ -132,7 +130,7 @@ public class ApiTradeServiceImpl implements ApiTradeService {
         User user = securityService.getUser();
         checkAmendOrderReqFields(amendOrderRequestDTO);
 
-        OrderResponseDTO orderResponseDTO;
+        ResponseDTO<OrderDataResponseDTO> orderResponseDTO;
         try {
             orderResponseDTO = tradeClient.amendOrder(amendOrderRequestDTO, getHeaderForAmendOrder(amendOrderRequestDTO,
                     TimeManager.getTimestampForOkx()));

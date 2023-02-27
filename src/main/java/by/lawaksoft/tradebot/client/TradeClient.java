@@ -1,5 +1,7 @@
 package by.lawaksoft.tradebot.client;
 
+import by.lawaksoft.tradebot.dto.ResponseDTO;
+import by.lawaksoft.tradebot.dto.order.OrderDataResponseDTO;
 import by.lawaksoft.tradebot.dto.order.OrderDetailsResponseDTO;
 import by.lawaksoft.tradebot.dto.order.OrderResponseDTO;
 import by.lawaksoft.tradebot.dto.order.amend_order.AmendOrderRequestDTO;
@@ -24,14 +26,14 @@ public interface TradeClient {
                                                            @RequestHeader Map<String, String> header);
 
     @PostMapping("${ORDER}")
-    OrderResponseDTO placeOrder(@RequestBody PlaceOrderRequestDTO placeOrderRequestDTO,
-                                @RequestHeader Map<String, String> header);
+    ResponseDTO<OrderDataResponseDTO> placeOrder(@RequestBody PlaceOrderRequestDTO placeOrderRequestDTO,
+                                                 @RequestHeader Map<String, String> header);
 
     @PostMapping("${CANCEL_ORDER}")
-    OrderResponseDTO cancelOrder(@RequestBody CancelOrderRequestDTO cancelOrderRequestDTO,
+    ResponseDTO<OrderDataResponseDTO> cancelOrder(@RequestBody CancelOrderRequestDTO cancelOrderRequestDTO,
                                  @RequestHeader Map<String, String> header);
 
     @PostMapping("${AMEND_ORDER}")
-    OrderResponseDTO amendOrder(@RequestBody AmendOrderRequestDTO amendOrderRequestDTO,
+    ResponseDTO<OrderDataResponseDTO> amendOrder(@RequestBody AmendOrderRequestDTO amendOrderRequestDTO,
                                 @RequestHeader Map<String, String> header);
 }

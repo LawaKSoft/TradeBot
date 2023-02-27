@@ -2,15 +2,15 @@ package by.lawaksoft.tradebot.service.api.trade.impl;
 
 import by.lawaksoft.tradebot.client.TradeClient;
 import by.lawaksoft.tradebot.config.security.SecurityService;
+import by.lawaksoft.tradebot.dto.ResponseDTO;
+import by.lawaksoft.tradebot.dto.order.*;
 import by.lawaksoft.tradebot.dto.order.amend_order.AmendOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.cancel_order.CancelOrderRequestDTO;
-import by.lawaksoft.tradebot.dto.order.*;
 import by.lawaksoft.tradebot.dto.order.place_order.PlaceOrderRequestDTO;
 import by.lawaksoft.tradebot.entity.Order;
 import by.lawaksoft.tradebot.entity.User;
 import by.lawaksoft.tradebot.entity.enums.Status;
 import by.lawaksoft.tradebot.exception.dto.BusinessException;
-import by.lawaksoft.tradebot.service.api.trade.impl.ApiTradeServiceImpl;
 import by.lawaksoft.tradebot.service.entity.TradeOrderService;
 import feign.FeignException;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,9 @@ class ApiTradeServiceImplTest {
     @Test
     void shouldPlaceOrder() {
         PlaceOrderRequestDTO placeOrderRequestDTO = getPlaceOrderRequestDTO();
-        OrderResponseDTO orderResponseDTO = getOrderResponseDTO();
+        ResponseDTO<OrderDataResponseDTO> response = ResponseDTO.<OrderDataResponseDTO>builder()
+                .data(List.of(getoOrderDataResponseDTO()))
+                .build();
         User user = getUser();
         Order order = Order.builder()
                 .instrumentId(INST_ID)
@@ -60,9 +62,8 @@ class ApiTradeServiceImplTest {
                 .user(user)
                 .status(Status.ACTIVE)
                 .build();
-
         when(securityService.getUser()).thenReturn(user);
-        when(tradeClient.placeOrder(any(), any())).thenReturn(orderResponseDTO);
+        when(tradeClient.placeOrder(any(), any())).thenReturn(response);
         when(orderService.save(order)).thenReturn(order);
 
         GetOrderResponseDTO getOrderResponseDTO = tradeService.placeOrder(placeOrderRequestDTO);
@@ -76,18 +77,7 @@ class ApiTradeServiceImplTest {
     @Test
     void shouldThrowExWhenFeignRequestPlaceOrder() {
         PlaceOrderRequestDTO placeOrderRequestDTO = getPlaceOrderRequestDTO();
-        OrderResponseDTO orderResponseDTO = getOrderResponseDTO();
         User user = getUser();
-        Order order = Order.builder()
-                .instrumentId(INST_ID)
-                .orderId(ORDER_ID)
-                .clientOrderId(CLIENT_ORDER_ID)
-                .price(BigDecimal.ONE)
-                .quantityToBuyOrSell(1)
-                .tag(TAG)
-                .user(user)
-                .status(Status.ACTIVE)
-                .build();
 
         when(securityService.getUser()).thenReturn(user);
         when(tradeClient.placeOrder(any(), any())).thenThrow(FeignException.class);
@@ -160,7 +150,9 @@ class ApiTradeServiceImplTest {
     @Test
     void shouldCancelOrder() {
         User user = getUser();
-        OrderResponseDTO orderResponseDTO = getOrderResponseDTO();
+        ResponseDTO<OrderDataResponseDTO> orderResponseDTO = ResponseDTO.<OrderDataResponseDTO>builder()
+                .data(List.of(getoOrderDataResponseDTO()))
+                .build();
         CancelOrderRequestDTO cancelOrderRequestDTO = getCancelOrderRequestDTO();
         Order order = Order.builder()
                 .user(user)
@@ -204,7 +196,9 @@ class ApiTradeServiceImplTest {
     void shouldAmendOrder() {
         AmendOrderRequestDTO amendOrderRequestDTO = getAmendOrderRequestDTO();
         User user = getUser();
-        OrderResponseDTO orderResponseDTO = getOrderResponseDTO();
+        ResponseDTO<OrderDataResponseDTO> orderResponseDTO = ResponseDTO.<OrderDataResponseDTO>builder()
+                .data(List.of(getoOrderDataResponseDTO()))
+                .build();
         Order order = Order.builder()
                 .user(user)
                 .id(1)
