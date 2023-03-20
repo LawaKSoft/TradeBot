@@ -37,6 +37,6 @@ public class AlgoInstance {
 	@JoinColumn(name = "id_instrument")
 	private Instrument instrument;
 
-	@OneToMany(mappedBy= "algoType",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy= "algoInstance",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<AlgoParam> parameters;
 }

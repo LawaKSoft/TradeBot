@@ -1,6 +1,6 @@
 package by.lawaksoft.tradebot.service.botinfo.impl;
 
-import by.lawaksoft.tradebot.beanlocator.MapperParameterBeanLocator;
+import by.lawaksoft.tradebot.beanlocator.impl.MapperParameterBeanLocatorImpl;
 import by.lawaksoft.tradebot.dto.botinfo.BotParametersDto;
 import by.lawaksoft.tradebot.entity.AlgoInstance;
 import by.lawaksoft.tradebot.entity.AlgoParam;
@@ -15,12 +15,14 @@ import by.lawaksoft.tradebot.repository.AlgoSettingRepository;
 import by.lawaksoft.tradebot.repository.InstrumentRepository;
 import by.lawaksoft.tradebot.repository.UserRepository;
 import by.lawaksoft.tradebot.service.botinfo.BotInfoService;
-import by.lawaksoft.tradebot.dto.botinfo.SimpleBotParametersDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+@Service
 public class BotInfoServiceImpl implements BotInfoService {
 
 	private final AlgoInstanceRepository algoInstanceRepository;
@@ -28,11 +30,11 @@ public class BotInfoServiceImpl implements BotInfoService {
 	private final AlgoParamRepository algoParamRepository;
 	private final InstrumentRepository instrumentRepository;
 	private final UserRepository userRepository;
-	private final MapperParameterBeanLocator mapperParameterBeanLocator;
+	private final MapperParameterBeanLocatorImpl mapperParameterBeanLocator;
 
 	public BotInfoServiceImpl(AlgoInstanceRepository algoInstanceRepository, AlgoSettingRepository algoSettingRepository,
 			AlgoParamRepository algoParamRepository, InstrumentRepository instrumentRepository, UserRepository userRepository,
-			MapperParameterBeanLocator mapperParameterBeanLocator) {
+			MapperParameterBeanLocatorImpl mapperParameterBeanLocator) {
 
 		this.algoInstanceRepository = algoInstanceRepository;
 		this.algoSettingRepository = algoSettingRepository;
@@ -45,9 +47,11 @@ public class BotInfoServiceImpl implements BotInfoService {
 	@Override
 	public BotParametersDto inputParameters(Map<String, String> botParameters) {
 
-		String algoName = algoSettingRepository.findAlgoSettingByNameSetting(botParameters.entrySet().iterator().next().getKey()).getAlgoType().getName();
+		AlgoSetting algoSetting = algoSettingRepository.findAlgoSettingByNameSetting(botParameters.entrySet().iterator().next().getKey()).orElseThrow(EntityNotFoundException::new);
+		String algoName = algoSetting.getAlgoType().getName();
 		ParameterMapper<BotParametersDto> mapper = mapperParameterBeanLocator.getMapper(AlgorithmType.byText(algoName));
 		BotParametersDto botParametersDto = mapper.toParametersDto(botParameters);
+
 		AlgoInstance algoInstance = createAlgoInstance(botParametersDto.getTradeMarketPare());
 		algoInstance = algoInstanceRepository.save(algoInstance);
 		saveParameters(botParameters, algoInstance);
@@ -57,7 +61,7 @@ public class BotInfoServiceImpl implements BotInfoService {
 	private void saveParameters(Map<String, String> botParameters, AlgoInstance algoInstance) {
 
 		var algoParam = botParameters.entrySet().stream().map(entry -> {
-			AlgoSetting algoSetting = algoSettingRepository.findAlgoSettingByNameSetting(entry.getKey());
+			AlgoSetting algoSetting = algoSettingRepository.findAlgoSettingByNameSetting(entry.getKey()).orElseThrow(EntityNotFoundException::new);
 			return AlgoParam.builder()
 					.algoInstance(algoInstance)
 					.value(entry.getValue())
@@ -71,8 +75,8 @@ public class BotInfoServiceImpl implements BotInfoService {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
-		User user = userRepository.findByUsername(username);
-		Instrument instrument = instrumentRepository.findByInstrumentId(tradeMarketPare).orElseThrow();
+		User user = userRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+		Instrument instrument = instrumentRepository.findByInstrumentId(tradeMarketPare).orElseThrow(EntityNotFoundException::new);
 		return AlgoInstance.builder()
 				.user(user)
 				.instrument(instrument)

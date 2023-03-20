@@ -1,18 +1,15 @@
 package by.lawaksoft.tradebot.dto.botinfo;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
-@Builder
+@SuperBuilder
+@AllArgsConstructor
 public class BotParametersDto {
 
 	private String tradeMarketPare;
-
-	public BotParametersDto(String tradeMarketPare) {
-
-		this.tradeMarketPare = tradeMarketPare;
-	}
 }

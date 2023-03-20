@@ -2,10 +2,12 @@ package by.lawaksoft.tradebot.entity.enums;
 
 import lombok.AllArgsConstructor;
 
+import java.util.Locale;
+
 @AllArgsConstructor
 public enum AlgorithmType {
 
-	SIMPLE("simple");
+	SIMPLE("Simple");
 
 	private final String text;
 
@@ -16,6 +18,6 @@ public enum AlgorithmType {
 
 	public static AlgorithmType byText(String text) {
 
-		return AlgorithmType.valueOf(text);
+		return AlgorithmType.valueOf(text.toUpperCase(Locale.ROOT));
 	}
 }
