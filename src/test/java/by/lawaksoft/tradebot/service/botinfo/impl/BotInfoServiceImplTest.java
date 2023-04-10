@@ -46,8 +46,6 @@ class BotInfoServiceImplTest {
 	@Autowired
 	private BotInfoServiceImpl botInfoService;
 	@MockBean
-	private SecurityContextHolder securityContextHolder;
-	@MockBean
 	private AlgoInstanceRepository algoInstanceRepository;
 	@MockBean
 	private AlgoSettingRepository algoSettingRepository;

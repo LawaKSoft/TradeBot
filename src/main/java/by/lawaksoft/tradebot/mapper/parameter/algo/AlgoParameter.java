@@ -1,4 +1,4 @@
-package by.lawaksoft.tradebot.mapper.parameter;
+package by.lawaksoft.tradebot.mapper.parameter.algo;
 
 import by.lawaksoft.tradebot.entity.enums.AlgorithmType;
 
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface AlgoParameterMapper {
+public @interface AlgoParameter {
 
 	AlgorithmType value();
 }
