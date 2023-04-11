@@ -23,7 +23,7 @@ public class MapperParameterBeanLocatorImpl implements MapperParameterBeanLocato
 	public void mapperBeanListener(ContextRefreshedEvent event) {
 
 		ApplicationContext context = event.getApplicationContext();
-		Map<String, Object> beanWithAnnotation = context.getBeansWithAnnotation(AlgoParameterMapper.class);
+		Map<String, Object> beanWithAnnotation = context.getBeansWithAnnotation(Algorithm.class);
 		for (Object obj : beanWithAnnotation.values()) {
 			AlgorithmType algorithmType = obj.getClass().getAnnotation(AlgoParameterMapper.class).value();
 			mappers.put(algorithmType, (ParameterMapper<?>) obj);
