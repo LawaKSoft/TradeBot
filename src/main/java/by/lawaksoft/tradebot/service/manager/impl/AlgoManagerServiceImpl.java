@@ -17,8 +17,8 @@ public class AlgoManagerServiceImpl implements AlgoManagerService {
 
     @Override
     public void run(AlgoInstanceDto algoInstance) {
-        var algoName = algoInstance.getAlgoType().getName();
 
+        var algoName = algoInstance.getAlgoType().getName();
         AlgoService algo = algorithmBeanLocator.getAlgo(AlgorithmBot.byText(algoName));
         algo.execute(algoInstance);
     }
