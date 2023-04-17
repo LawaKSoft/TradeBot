@@ -1,10 +1,11 @@
 package by.lawaksoft.tradebot.service.manager.impl;
 
 import by.lawaksoft.tradebot.beanlocator.AlgorithmBeanLocator;
-import by.lawaksoft.tradebot.dto.AlgoInstanceDto;
+import by.lawaksoft.tradebot.dto.manager.AlgoInstanceDto;
 import by.lawaksoft.tradebot.entity.AlgoType;
-import by.lawaksoft.tradebot.entity.enums.AlgorithmBot;
+import by.lawaksoft.tradebot.entity.enums.AlgorithmBotType;
 import by.lawaksoft.tradebot.exception.dto.BusinessException;
+import by.lawaksoft.tradebot.service.manager.AlgoService;
 import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ class AlgoManagerServiceImplTest {
     @MockBean
     private AlgorithmBeanLocator algorithmBeanLocator;
 
+    @MockBean
+    private AlgoService algoService;
+
     private static MockedStatic<SecurityContextHolder> securityContextHolderMockedStatic;
 
     @BeforeAll
@@ -45,12 +49,11 @@ class AlgoManagerServiceImplTest {
 
         AlgoInstanceDto algoInstanceDto = getAlgoInstanceDto();
 
-        when(algorithmBeanLocator.getAlgo(AlgorithmBot.GRID)).thenReturn(getAlgoGridService());
-
+        when(algorithmBeanLocator.getAlgo(AlgorithmBotType.GRID)).thenReturn(getAlgoGridService());
+        doNothing().when(algoService).execute(algoInstanceDto);
         algoManagerService.run(algoInstanceDto);
 
-        verify(algoManagerService, times(1)).run(algoInstanceDto);
-        verify(algorithmBeanLocator, times(1)).getAlgo(AlgorithmBot.GRID);
+        verify(algorithmBeanLocator, times(1)).getAlgo(AlgorithmBotType.GRID);
     }
 
     @Test

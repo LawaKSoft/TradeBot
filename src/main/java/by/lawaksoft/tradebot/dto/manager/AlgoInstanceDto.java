@@ -1,4 +1,4 @@
-package by.lawaksoft.tradebot.dto;
+package by.lawaksoft.tradebot.dto.manager;
 
 import by.lawaksoft.tradebot.entity.AlgoType;
 import lombok.Getter;

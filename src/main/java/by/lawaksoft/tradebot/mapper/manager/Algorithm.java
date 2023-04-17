@@ -1,6 +1,6 @@
 package by.lawaksoft.tradebot.mapper.manager;
 
-import by.lawaksoft.tradebot.entity.enums.AlgorithmBot;
+import by.lawaksoft.tradebot.entity.enums.AlgorithmBotType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Algorithm {
 
-    AlgorithmBot value();
+    AlgorithmBotType value();
 }
