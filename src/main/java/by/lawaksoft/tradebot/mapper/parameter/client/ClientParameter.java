@@ -1,6 +1,6 @@
-package by.lawaksoft.tradebot.mapper.parameter;
+package by.lawaksoft.tradebot.mapper.parameter.client;
 
-import by.lawaksoft.tradebot.entity.enums.AlgorithmType;
+import by.lawaksoft.tradebot.entity.enums.ClientType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface AlgoParameterMapper {
+public @interface ClientParameter {
 
-	AlgorithmType value();
+	ClientType value();
 }

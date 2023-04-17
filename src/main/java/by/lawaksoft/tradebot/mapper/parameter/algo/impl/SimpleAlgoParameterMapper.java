@@ -1,17 +1,17 @@
-package by.lawaksoft.tradebot.mapper.parameter.impl;
+package by.lawaksoft.tradebot.mapper.parameter.algo.impl;
 
 import by.lawaksoft.tradebot.dto.botinfo.SimpleBotParametersDto;
 import by.lawaksoft.tradebot.entity.enums.AlgorithmType;
-import by.lawaksoft.tradebot.mapper.parameter.AlgoParameterMapper;
-import by.lawaksoft.tradebot.mapper.parameter.ParameterMapper;
+import by.lawaksoft.tradebot.mapper.parameter.algo.AlgoParameter;
+import by.lawaksoft.tradebot.mapper.parameter.algo.AlgoParameterMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
 @Service
-@AlgoParameterMapper(AlgorithmType.SIMPLE)
-public class SimpleAlgoParameterMapper implements ParameterMapper<SimpleBotParametersDto> {
+@AlgoParameter(AlgorithmType.SIMPLE)
+public class SimpleAlgoParameterMapper implements AlgoParameterMapper<SimpleBotParametersDto> {
 
 	@Override
 	public SimpleBotParametersDto toParametersDto(Map<String, String> parameters) {
