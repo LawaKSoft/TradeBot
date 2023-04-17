@@ -1,12 +1,9 @@
 package by.lawaksoft.tradebot.beanlocator.impl;
 
-import by.lawaksoft.tradebot.beanlocator.MapperAlgorithmBeanLocator;
-import by.lawaksoft.tradebot.dto.botinfo.BotParametersDto;
+import by.lawaksoft.tradebot.beanlocator.AlgorithmBeanLocator;
 import by.lawaksoft.tradebot.entity.enums.AlgorithmBot;
-import by.lawaksoft.tradebot.entity.enums.AlgorithmType;
 import by.lawaksoft.tradebot.mapper.manager.Algorithm;
-import by.lawaksoft.tradebot.mapper.parameter.AlgoParameterMapper;
-import by.lawaksoft.tradebot.mapper.parameter.ParameterMapper;
+import by.lawaksoft.tradebot.service.manager.AlgoService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -17,9 +14,9 @@ import java.util.Map;
 import java.util.Objects;
 
 @Component
-public class MapperAlgorithmBeanLocatorImpl implements MapperAlgorithmBeanLocator {
+public class AlgorithmBeanLocatorImpl implements AlgorithmBeanLocator {
 
-    private final Map<AlgorithmBot, ParameterMapper<?>> mappers = new HashMap<>();
+    private final Map<AlgorithmBot, AlgoService> mappers = new HashMap<>();
 
     @EventListener
     public void mapperBeanListener(ContextRefreshedEvent event) {
@@ -27,14 +24,14 @@ public class MapperAlgorithmBeanLocatorImpl implements MapperAlgorithmBeanLocato
         Map<String, Object> beanWithAnnotation = context.getBeansWithAnnotation(Algorithm.class);
         for (Object obj : beanWithAnnotation.values()) {
             AlgorithmBot algorithmBot = obj.getClass().getAnnotation(Algorithm.class).value();
-            mappers.put(algorithmBot, (ParameterMapper<?>) obj);
+            mappers.put(algorithmBot, (AlgoService) obj);
         }
     }
 
     @Override
-    public <T extends BotParametersDto> ParameterMapper<T> getMapper(AlgorithmBot type) {
+    public AlgoService getAlgo(AlgorithmBot type) {
 
         var mapper = mappers.get(type);
-        return Objects.nonNull(mapper) ? (ParameterMapper<T>) mapper : null;
+        return Objects.nonNull(mapper) ? mapper : null;
     }
 }
