@@ -1,6 +1,6 @@
 package by.lawaksoft.tradebot.service.botinfo.impl;
 
-import by.lawaksoft.tradebot.beanlocator.impl.MapperParameterBeanLocatorImpl;
+import by.lawaksoft.tradebot.beanlocator.impl.AlgoParameterMapperBeanLocatorImpl;
 import by.lawaksoft.tradebot.dto.botinfo.BotParametersDto;
 import by.lawaksoft.tradebot.entity.AlgoInstance;
 import by.lawaksoft.tradebot.entity.AlgoParam;
@@ -8,7 +8,7 @@ import by.lawaksoft.tradebot.entity.AlgoSetting;
 import by.lawaksoft.tradebot.entity.Instrument;
 import by.lawaksoft.tradebot.entity.User;
 import by.lawaksoft.tradebot.entity.enums.AlgorithmType;
-import by.lawaksoft.tradebot.mapper.parameter.ParameterMapper;
+import by.lawaksoft.tradebot.mapper.parameter.algo.AlgoParameterMapper;
 import by.lawaksoft.tradebot.repository.AlgoInstanceRepository;
 import by.lawaksoft.tradebot.repository.AlgoParamRepository;
 import by.lawaksoft.tradebot.repository.AlgoSettingRepository;
@@ -30,11 +30,11 @@ public class BotInfoServiceImpl implements BotInfoService {
 	private final AlgoParamRepository algoParamRepository;
 	private final InstrumentRepository instrumentRepository;
 	private final UserRepository userRepository;
-	private final MapperParameterBeanLocatorImpl mapperParameterBeanLocator;
+	private final AlgoParameterMapperBeanLocatorImpl mapperParameterBeanLocator;
 
 	public BotInfoServiceImpl(AlgoInstanceRepository algoInstanceRepository, AlgoSettingRepository algoSettingRepository,
 			AlgoParamRepository algoParamRepository, InstrumentRepository instrumentRepository, UserRepository userRepository,
-			MapperParameterBeanLocatorImpl mapperParameterBeanLocator) {
+			AlgoParameterMapperBeanLocatorImpl mapperParameterBeanLocator) {
 
 		this.algoInstanceRepository = algoInstanceRepository;
 		this.algoSettingRepository = algoSettingRepository;
@@ -49,7 +49,7 @@ public class BotInfoServiceImpl implements BotInfoService {
 
 		AlgoSetting algoSetting = algoSettingRepository.findAlgoSettingByNameSetting(botParameters.entrySet().iterator().next().getKey()).orElseThrow(EntityNotFoundException::new);
 		String algoName = algoSetting.getAlgoType().getName();
-		ParameterMapper<BotParametersDto> mapper = mapperParameterBeanLocator.getMapper(AlgorithmType.byText(algoName));
+		AlgoParameterMapper<BotParametersDto> mapper = mapperParameterBeanLocator.getMapper(AlgorithmType.byText(algoName));
 		BotParametersDto botParametersDto = mapper.toParametersDto(botParameters);
 
 		AlgoInstance algoInstance = createAlgoInstance(botParametersDto.getTradeMarketPare());
