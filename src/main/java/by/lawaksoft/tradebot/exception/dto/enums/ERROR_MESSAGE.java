@@ -8,7 +8,8 @@ public enum ERROR_MESSAGE {
 	CANT_MAP_OBJECT_TO_JSON("Cant map object to json"),
 	BAD_REQUEST("Bed request"),
 	BALANCE_NOT_FOUND("Balance not found"),
-	REGISTRATION_FAILED("Can't create user with that data");
+	REGISTRATION_FAILED("Can't create user with that data"),
+	JSON_MAPPER_FAILED("Failed map object to json: ");
 
 	private final String message;
 

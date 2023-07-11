@@ -1,9 +1,8 @@
 package by.lawaksoft.tradebot.service.schedule;
 
 import by.lawaksoft.tradebot.service.schedule.task.ClientTask;
-import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public interface SchedulerManager {
 
 	void addClientTask(String name, ClientTask task);
