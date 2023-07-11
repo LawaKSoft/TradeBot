@@ -9,6 +9,7 @@ public enum ERROR_MESSAGE {
 	BAD_REQUEST("Bed request"),
 	BALANCE_NOT_FOUND("Balance not found"),
 	REGISTRATION_FAILED("Can't create user with that data"),
+	ENUM_NOT_FOUND("Enum not found"),
 	JSON_MAPPER_FAILED("Failed map object to json: ");
 
 	private final String message;
