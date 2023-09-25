@@ -2,6 +2,7 @@ package by.lawaksoft.tradebot.service.synchronize.impl;
 
 import by.lawaksoft.tradebot.service.synchronize.OkxWebsocketClient;
 import by.lawaksoft.tradebot.service.synchronize.SynchronizeService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,6 +16,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 	}
 
 	@Override
+	@Scheduled(fixedDelay = 60000)
 	public void synchronizeMarketData() {
 
 		okxWebsocketClient.connect();
