@@ -17,17 +17,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Component
 public class OkxWebsocketClient extends WebSocketClient {
 
-	private final Logger logger = LoggerFactory.getLogger(OkxWebsocketClient.class);
+	private final Logger logger = Logger.getLogger(OkxWebsocketClient.class.getName());
 	private static final URI OKX_URI = URI.create("wss://ws.okx.com:8443/ws/v5/public");
 	private final InstrumentRepository instrumentRepository;
 	private final CandlestickRepository candlestickRepository;
@@ -50,7 +49,7 @@ public class OkxWebsocketClient extends WebSocketClient {
 		if (message != null) {
 			super.send(message);
 		} else {
-			logger.info("Failed to send message to websocket server: " + message);
+			logger.info("Failed to send message to websocket server");
 		}
 	}
 
