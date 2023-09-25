@@ -4,8 +4,13 @@ import by.lawaksoft.tradebot.dto.model.market.CandlestickDto;
 import by.lawaksoft.tradebot.document.Candlestick;
 import by.lawaksoft.tradebot.entity.Instrument;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.TimeZone;
+
 public class DocumentMapper {
 
+	private static final Long EXPIRED_TIME = 7889400000L;
 	private DocumentMapper() {
 
 	}
@@ -23,6 +28,8 @@ public class DocumentMapper {
 				.volCurrency(candlestickDto.getVolCurrency())
 				.volCurrencyQuote(candlestickDto.getVolCurrencyQuote())
 				.confirm(candlestickDto.isConfirm())
+				.expiredTime(LocalDateTime.ofInstant(Instant.ofEpochSecond(candlestickDto.getTimestamp() + EXPIRED_TIME),
+						TimeZone.getDefault().toZoneId()))
 				.build();
 	}
 }

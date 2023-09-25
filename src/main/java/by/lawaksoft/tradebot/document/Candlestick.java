@@ -7,9 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Document(collation = "candlestick")
 @Getter
@@ -32,4 +34,6 @@ public class Candlestick {
 	private BigDecimal volCurrency;
 	private BigDecimal volCurrencyQuote;
 	private Boolean confirm;
+	@Indexed(expireAfter = "0m")
+	private LocalDateTime expiredTime;
 }
