@@ -65,4 +65,7 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @ManyToOne
+    private AlgoInstance algoInstance;
 }

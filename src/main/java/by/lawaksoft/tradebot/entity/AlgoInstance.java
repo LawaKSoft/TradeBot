@@ -9,7 +9,7 @@ import lombok.Setter;
 
 import java.util.Set;
 
-@Entity(name = "algo-instances")
+@Entity(name = "algo_instances")
 @Getter
 @Setter
 @Builder

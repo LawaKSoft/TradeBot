@@ -9,7 +9,9 @@ import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 
 @Service
 public class CreateTradeMessageServiceImpl implements CreateTradeMessageService {
@@ -25,6 +27,9 @@ public class CreateTradeMessageServiceImpl implements CreateTradeMessageService 
 
     @Value("${BALANCE_PATH}")
     private String BALANCE_PATH;
+
+    @Value("${ORDERS_HISTORY_PATH}")
+    private String ORDERS_HISTORY_PATH;
 
     @Value("${ORDER_ID}")
     private String ORDER_ID;
@@ -67,14 +72,15 @@ public class CreateTradeMessageServiceImpl implements CreateTradeMessageService 
 
     @Override
     public String getBalanceWithCurrenciesMessage(List<String> currencies, String timestamp) {
-        String message = timestamp + Method.GET + BALANCE_PATH + "?ccy=";
-        for (int i = 0; i < currencies.size(); i++) {
-            if (i == currencies.size() - 1) {
-                message = message + currencies.get(i);
-            } else {
-                message = message + currencies.get(i) + ",";
-            }
-        }
-        return message;
+        StringJoiner currencyJoiner = new StringJoiner(",");
+        currencies.forEach(currencyJoiner::add);
+        return timestamp + Method.GET + BALANCE_PATH + "?ccy=" + currencyJoiner;
+    }
+
+    @Override
+    public String getHistoryForWeek(String[] instIds, String timestamp) {
+        StringJoiner instIdJoiner = new StringJoiner(",");
+        Arrays.stream(instIds).forEach(instIdJoiner::add);
+        return timestamp + Method.GET + ORDERS_HISTORY_PATH + "?instId=" + instIdJoiner + "&instType=SPOT";
     }
 }
