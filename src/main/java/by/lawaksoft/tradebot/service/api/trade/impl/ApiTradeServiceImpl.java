@@ -3,12 +3,12 @@ package by.lawaksoft.tradebot.service.api.trade.impl;
 import by.lawaksoft.tradebot.client.TradeClient;
 import by.lawaksoft.tradebot.config.security.OkxConfigSecurity;
 import by.lawaksoft.tradebot.config.security.SecurityService;
+import by.lawaksoft.tradebot.document.Order;
 import by.lawaksoft.tradebot.dto.ResponseDTO;
 import by.lawaksoft.tradebot.dto.order.*;
 import by.lawaksoft.tradebot.dto.order.amend_order.AmendOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.cancel_order.CancelOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.place_order.PlaceOrderRequestDTO;
-import by.lawaksoft.tradebot.entity.Order;
 import by.lawaksoft.tradebot.entity.User;
 import by.lawaksoft.tradebot.entity.enums.Status;
 import by.lawaksoft.tradebot.exception.dto.BusinessException;
@@ -65,7 +65,7 @@ public class ApiTradeServiceImpl implements ApiTradeService {
         orderMap.setClientOrderId(orderResponseDTO.getData().get(0).getClOrdId());
         orderMap.setOrderId(orderResponseDTO.getData().get(0).getOrdId());
         orderMap.setTag(orderResponseDTO.getData().get(0).getTag());
-        orderMap.setUser(user);
+        orderMap.setUserId(user.getId());
         orderMap.setStatus(Status.ACTIVE);
 
         Order orderDb = orderService.save(orderMap);
@@ -96,7 +96,7 @@ public class ApiTradeServiceImpl implements ApiTradeService {
         Order orderDb = orderService.findOrderByOrderIdAndUserId(orderDetailsResponseDTO.getOrdId(), user.getId());
 
         Order order = mapOrderDetailsResponseDTOToOrder(orderDetailsResponseDTO);
-        order.setUser(user);
+        order.setUserId(user.getId());
         order.setOrderId(orderDb.getOrderId());
         order.setId(orderDb.getId());
 
