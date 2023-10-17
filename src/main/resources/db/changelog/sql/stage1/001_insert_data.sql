@@ -18,10 +18,10 @@ values (2, 1, 2, 'Password_2023');
 insert into client_info_params (id, user_id, client_info_setting_id, value)
 values (3, 1, 3, 'D7D155331E0838FB63CC16C9EA6FFD42');
 
-insert into instruments (id, name, value)
-values (1, 'BTC-USDT', 'BTC-USDT');
-insert into instruments (id, name, value)
-values (2, 'ETH-USDT', 'ETH-USDT');
+insert into instruments (id, name)
+values (1, 'BTC-USDT');
+insert into instruments (id, name)
+values (2, 'ETH-USDT');
 
 insert into algo_types (id, name)
 values (1, 'Grid');

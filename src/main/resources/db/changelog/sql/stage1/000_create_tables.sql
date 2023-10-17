@@ -8,7 +8,6 @@ CREATE TABLE "algo_types" (
 CREATE TABLE "instruments" (
                                      "id" serial NOT NULL,
                                      "name" varchar NOT NULL,
-                                     "value" varchar NOT NULL,/*integer?*/
                                      CONSTRAINT "instrument_pk" PRIMARY KEY ("id")
 );
 
@@ -34,7 +33,7 @@ CREATE TABLE "users" (
 
 CREATE TABLE "client_info_types" (
                                            "id" serial NOT NULL,
-                                           "name" varchar NOT NULL,/*integer?*/
+                                           "name" varchar NOT NULL,
                                            CONSTRAINT "client_info_type_pk" PRIMARY KEY ("id")
 );
 
