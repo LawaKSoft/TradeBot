@@ -1,6 +1,7 @@
 package by.lawaksoft.tradebot.repository;
 
 import by.lawaksoft.tradebot.entity.Order;
+import by.lawaksoft.tradebot.entity.enums.NecessarySynchronization;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,15 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("select o from orders o where o.user.id = ?1 and o.status = 'ACTIVE'")
     Optional<List<Order>> findAllByUserIdAndStatusActive(long userId);
+
+    @Query("select o from orders o where o.user.id = ?1 and o.instrumentId = ?2 and o.status = 'ACTIVE'")
+    Optional<List<Order>> findAllByUserIdAndInstrumentAndStatus(Long userId, String instrument);
+
+    @Query("select o " +
+            "from orders o " +
+            "where o.user.id = ?1 and " +
+            "   o.necessarySynchronization = 'ACCEPT' or " +
+            "   o.necessarySynchronization = 'UPDATED' or " +
+            "   o.necessarySynchronization = 'CLOSED'")
+    Optional<List<Order>> findAllByAlgoInstanceIdAndNecessarySynchronizationIn(long algoId);
 }

@@ -9,7 +9,8 @@ public enum ERROR_MESSAGE {
 	BAD_REQUEST("Bed request"),
 	BALANCE_NOT_FOUND("Balance not found"),
 	REGISTRATION_FAILED("Can't create user with that data"),
-	ENUM_NOT_FOUND("Enum not found");
+	ENUM_NOT_FOUND("Enum not found"),
+	BAD_ALGORITHM_INSTANCE("Cant found algorithm instance by user and instrument");
 
 	private final String message;
 

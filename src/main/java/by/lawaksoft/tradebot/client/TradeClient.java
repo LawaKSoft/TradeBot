@@ -39,7 +39,12 @@ public interface TradeClient {
                                                  @RequestHeader Map<String, String> header);
 
     @GetMapping("${ORDER_HISTORY_FOR_WEEK}")
-    ResponseDTO<OrderDetailsResponseDTO> getOrderHistoryForWeek(@RequestParam(INSTRUMENT_ID) String[] intIds,
-                                                                @RequestParam(INST_TYPE) String instType,
-                                                                @RequestHeader Map<String, String> header);
+    ResponseDTO<OrderDetailsResponseDTO> getOrderHistoryForWeekByInstrument(@RequestParam(INSTRUMENT_ID) String instId,
+                                                                            @RequestParam(INST_TYPE) String instType,
+                                                                            @RequestHeader Map<String, String> header);
+
+    @GetMapping("${ORDER_HISTORY_FOR_WEEK}")
+    ResponseDTO<OrderDetailsResponseDTO> getOrderHistoryForWeekByInstruments(@RequestParam(INST_TYPE) String instType,
+                                                                             @RequestParam(INSTRUMENT_ID) String[] instIds,
+                                                                             @RequestHeader Map<String, String> header);
 }

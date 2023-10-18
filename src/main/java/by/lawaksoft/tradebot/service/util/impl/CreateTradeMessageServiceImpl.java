@@ -9,7 +9,6 @@ import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -78,9 +77,12 @@ public class CreateTradeMessageServiceImpl implements CreateTradeMessageService 
     }
 
     @Override
-    public String getHistoryForWeek(String[] instIds, String timestamp) {
-        StringJoiner instIdJoiner = new StringJoiner(",");
-        Arrays.stream(instIds).forEach(instIdJoiner::add);
-        return timestamp + Method.GET + ORDERS_HISTORY_PATH + "?instId=" + instIdJoiner + "&instType=SPOT";
+    public String getHistoryForWeekByInstrumentId(String instIds, String timestamp) {
+        return timestamp + Method.GET + ORDERS_HISTORY_PATH + "?instId=" + instIds + "&";
+    }
+
+    @Override
+    public String getHistoryForWeekByInstrumentsIds(List<String> instrumentIds, String timestamp) {
+        return timestamp + Method.GET + ORDERS_HISTORY_PATH + "?instType=SPOT&instId=" + String.join(",", instrumentIds);
     }
 }

@@ -1,24 +1,20 @@
 package by.lawaksoft.tradebot.service.schedule.order;
 
-import by.lawaksoft.tradebot.client.TradeClient;
-import by.lawaksoft.tradebot.config.security.OkxConfigSecurity;
-import by.lawaksoft.tradebot.dto.ResponseDTO;
 import by.lawaksoft.tradebot.dto.order.OrderDetailsResponseDTO;
+import by.lawaksoft.tradebot.entity.AlgoParam;
 import by.lawaksoft.tradebot.entity.Order;
-import by.lawaksoft.tradebot.entity.enums.Status;
-import by.lawaksoft.tradebot.exception.InstrumentsException;
+import by.lawaksoft.tradebot.service.entity.AlgoInstanceService;
 import by.lawaksoft.tradebot.service.entity.TradeOrderService;
-import by.lawaksoft.tradebot.service.util.CreateTradeMessageService;
-import by.lawaksoft.tradebot.util.TimeManager;
-import feign.FeignException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -27,34 +23,37 @@ import java.util.stream.Collectors;
 public class OrderScheduler {
 
     private final TradeOrderService tradeOrderService;
-    private final TradeClient tradeClient;
-    private final OkxConfigSecurity okxConfigSecurity;
-    private final CreateTradeMessageService createTradeMessageService;
+    private final AlgoInstanceService algoInstanceService;
 
     @Async
     @Scheduled(fixedDelay = 10000L)
+    @Transactional
     public void synchronizedOrders() {
-        try {
-            Long userId = 1L;
-            List<Order> ordersDb = tradeOrderService.findAllDistinctInstrumentsByUserId(userId);
-            String[] instIds = ordersDb.stream().map(Order::getInstrumentId).toArray(String[]::new);
-            String timestamp = TimeManager.getTimestampForOkx();
-            ResponseDTO<OrderDetailsResponseDTO> ordersFs =
-                    tradeClient.getOrderHistoryForWeek(instIds, "SPOT",
-                            okxConfigSecurity.getHeader(createTradeMessageService.getHistoryForWeek(instIds, timestamp), timestamp));
-            Set<String> canceledOrders = ordersFs.getData().stream()
-                    .filter(orderF -> orderF.getState().equals("canceled"))
-                    .map(OrderDetailsResponseDTO::getInstId)
-                    .collect(Collectors.toSet());
+        Long userId = 1L;
+        String instrumentId = "BTC-USDT-1234";
 
-            List<Order> canceled = ordersDb.stream()
-                    .filter(order -> canceledOrders.contains(order.getInstrumentId()) && order.isReduceOnly())
-                    .peek(order -> order.setStatus(Status.CANCELED))
-                    .toList();
+        //Map<Map<nameSettings, value>, List<Order (necessary - Active||Canceled)>>
+        Map<Map<String, String>, List<Order>> algoParamsNOrdersMap = algoInstanceService
+                .findAllByUserIdAndInstrumentId(userId, instrumentId).stream()
+                .collect(Collectors.toMap(
+                        algoInstance -> algoInstance.getParameters().stream()
+                                .collect(Collectors.toMap(
+                                        algoParam -> algoParam.getAlgoSetting().getNameSetting(),
+                                        AlgoParam::getValue
+                                )),
+                        algoInstance -> tradeOrderService.findAllByAlgoInstIdAndNecessarySynch(algoInstance.getId())
+                ));
 
-            tradeOrderService.saveAll(canceled);
-        } catch (FeignException | InstrumentsException e) {
-            log.warn(e.getMessage());
-        }
+        Flux.fromIterable(algoParamsNOrdersMap.entrySet())
+                .flatMap(entry -> {
+                    Map<String, String> algoSettings = entry.getKey();
+                    List<Order> ordersDb = entry.getValue();
+                    List<OrderDetailsResponseDTO> ordersStock = tradeOrderService
+                            .getStockOrdersByAlgoSettingsAndInstrumentsIds(algoSettings, ordersDb.stream()
+                                                                                            .map(Order::getInstrumentId)
+                                                                                            .toList());
+                    //TODO: Добавить логику сравнения и синхронизации
+                    return null;
+                });
     }
 }

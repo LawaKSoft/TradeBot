@@ -21,6 +21,7 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 import static by.lawaksoft.tradebot.mapper.OrderMapper.*;
@@ -37,7 +38,7 @@ public class ApiTradeServiceImpl implements ApiTradeService {
     private static final String BAD_FEIGN_REQUEST = "Bad feign request %s";
     private static final String ORD_N_CLO_IDS_CANT_BE_EMPTY = "Order id and client order id cant be empty";
     private static final String NEW_QUAN_N_PRICE_CANT_BE_EMPTY = "New quantity and new price cant be empty";
-
+    private static final String INSTRUMENT_TYPE_SPOT = "SPOT";
     @Autowired
     public ApiTradeServiceImpl(TradeOrderService orderService, CreateTradeMessageService createTradeMessageService,
                                OkxConfigSecurity okxConfigSecurity, SecurityService securityService, TradeClient tradeClient) {
@@ -146,6 +147,31 @@ public class ApiTradeServiceImpl implements ApiTradeService {
         return mapOrderToGetOrderResponseDTO(updateOrder);
     }
 
+    @Override
+    public List<OrderDetailsResponseDTO> getOrdersHistoryByAlgoParamsAndInstrumentId(Map<String, String> algoParams, String instrumentId) {
+        ResponseDTO<OrderDetailsResponseDTO> responseOrderDetailsDto =
+                tradeClient.getOrderHistoryForWeekByInstrument(instrumentId, INSTRUMENT_TYPE_SPOT,
+                        getHeaderForOrderHistoryByAlgoParamsAndInstrumentId(algoParams, instrumentId, TimeManager.getTimestampForOkx()));
+        return responseOrderDetailsDto.getData();
+    }
+
+    @Override
+    public List<OrderDetailsResponseDTO> getOrdersHistoryByAlgoParamsAndInstrumentsIds(Map<String, String> algoParams, List<String> instrumentId) {
+        ResponseDTO<OrderDetailsResponseDTO> responseOrderDetailsDto =
+                tradeClient.getOrderHistoryForWeekByInstruments(INSTRUMENT_TYPE_SPOT, instrumentId.toArray(new String[0]),
+                        getHeaderForOrderHistoryByAlgoParamsAndInstrumentsIds(algoParams, instrumentId, TimeManager.getTimestampForOkx()));
+        return responseOrderDetailsDto.getData();
+    }
+
+    private Map<String, String> getHeaderForOrderHistoryByAlgoParamsAndInstrumentsIds(Map<String, String> algoParams, List<String> instrumentIds, String timestamp) {
+        String message = createTradeMessageService.getHistoryForWeekByInstrumentsIds(instrumentIds, timestamp);
+        return okxConfigSecurity.getHeader(message, timestamp, algoParams);
+    }
+
+    private Map<String, String> getHeaderForOrderHistoryByAlgoParamsAndInstrumentId(Map<String, String> algoParams, String instrumentId, String timestamp) {
+        String message = createTradeMessageService.getHistoryForWeekByInstrumentId(instrumentId, timestamp);
+        return okxConfigSecurity.getHeader(message, timestamp, algoParams);
+    }
 
     private Map<String, String> getHeaderForCancelOrder(CancelOrderRequestDTO cancelOrderRequestDTO, String timestamp) {
         String message = createTradeMessageService.cancelOrderMessage(cancelOrderRequestDTO, timestamp);
