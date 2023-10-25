@@ -3,6 +3,7 @@ package by.lawaksoft.tradebot.repository;
 import by.lawaksoft.tradebot.entity.Order;
 import by.lawaksoft.tradebot.entity.enums.NecessarySynchronization;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -27,4 +28,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "   o.necessarySynchronization = 'UPDATED' or " +
             "   o.necessarySynchronization = 'CLOSED'")
     Optional<List<Order>> findAllByAlgoInstanceIdAndNecessarySynchronizationIn(long algoId);
+
+    @Modifying
+    @Query(value = "update orders o set o.necessarySynchronization = :nesSync where o.instrumentId = :instrumentId")
+    void updateNecessarySynchronizationByInstrumentId(String nesSync, String instrumentId);
 }

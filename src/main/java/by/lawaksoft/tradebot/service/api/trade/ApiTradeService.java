@@ -21,5 +21,5 @@ public interface ApiTradeService {
     GetOrderResponseDTO amendOrder(AmendOrderRequestDTO amendOrderRequestDTO);
 
     List<OrderDetailsResponseDTO> getOrdersHistoryByAlgoParamsAndInstrumentId(Map<String, String> algoParams, String instrumentId);
-    List<OrderDetailsResponseDTO> getOrdersHistoryByAlgoParamsAndInstrumentsIds(Map<String, String> algoParams, List<String> instrumentId);
+    List<OrderDetailsResponseDTO> getOrdersHistoryByAlgoParamsAndInstrumentId(Map<String, String> algoParams, List<String> instrumentId);
 }

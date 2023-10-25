@@ -16,7 +16,11 @@ public interface TradeOrderService {
 
     List<Order> findAllByAlgoInstIdAndNecessarySynch(Long algoId);
 
-    List<OrderDetailsResponseDTO> getStockOrdersByAlgoSettingsAndInstrumentsIds(Map<String, String> algoSettings, List<String> instrumentsIds);
+    List<OrderDetailsResponseDTO> getStockOrdersByAlgoSettingsAndInstrumentId(Map<String, String> algoSettings, String instrumentsId);
 
-    boolean synchronizedOrdersDbAndStockOrders(List<Order> ordersDb, List<OrderDetailsResponseDTO> ordersStock);
+    void updateOrderByAlgoSettings(Map<String, String> algoSettings, Order order);
+
+    void saveOrderByAlgoSettings(Map<String, String> algoSettings, Order order);
+
+    void closedOrderByAlgoSettings(Map<String, String> algoSettings, Order order);
 }

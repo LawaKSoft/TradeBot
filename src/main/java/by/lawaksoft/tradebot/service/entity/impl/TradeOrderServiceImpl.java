@@ -46,12 +46,22 @@ public class TradeOrderServiceImpl implements TradeOrderService {
     }
 
     @Override
-    public List<OrderDetailsResponseDTO> getStockOrdersByAlgoSettingsAndInstrumentsIds(Map<String, String> algoParams, List<String> ordersDb) {
-        return apiTradeService.getOrdersHistoryByAlgoParamsAndInstrumentsIds(algoParams, ordersDb);
+    public List<OrderDetailsResponseDTO> getStockOrdersByAlgoSettingsAndInstrumentId(Map<String, String> algoParams, String instrumentId) {
+        return apiTradeService.getOrdersHistoryByAlgoParamsAndInstrumentId(algoParams, instrumentId);
     }
 
     @Override
-    public boolean synchronizedOrdersDbAndStockOrders(List<Order> ordersDb, List<OrderDetailsResponseDTO> ordersStock) {
-        return true;
+    public void updateOrderByAlgoSettings(Map<String, String> algoSettings, Order order) {
+
+    }
+
+    @Override
+    public void saveOrderByAlgoSettings(Map<String, String> algoSettings, Order order) {
+
+    }
+
+    @Override
+    public void closedOrderByAlgoSettings(Map<String, String> algoSettings, Order order) {
+
     }
 }

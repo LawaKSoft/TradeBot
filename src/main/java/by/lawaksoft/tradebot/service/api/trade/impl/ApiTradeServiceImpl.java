@@ -156,7 +156,7 @@ public class ApiTradeServiceImpl implements ApiTradeService {
     }
 
     @Override
-    public List<OrderDetailsResponseDTO> getOrdersHistoryByAlgoParamsAndInstrumentsIds(Map<String, String> algoParams, List<String> instrumentId) {
+    public List<OrderDetailsResponseDTO> getOrdersHistoryByAlgoParamsAndInstrumentId(Map<String, String> algoParams, List<String> instrumentId) {
         ResponseDTO<OrderDetailsResponseDTO> responseOrderDetailsDto =
                 tradeClient.getOrderHistoryForWeekByInstruments(INSTRUMENT_TYPE_SPOT, instrumentId.toArray(new String[0]),
                         getHeaderForOrderHistoryByAlgoParamsAndInstrumentsIds(algoParams, instrumentId, TimeManager.getTimestampForOkx()));
