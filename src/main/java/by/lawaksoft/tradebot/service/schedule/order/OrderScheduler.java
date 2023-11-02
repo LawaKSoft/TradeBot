@@ -39,8 +39,8 @@ public class OrderScheduler {
     @Transactional
     public void synchronizedOrders() {
         Long userId = 1L;
-        String instrumentId = "BTC-USDT-1234";
-
+        String instrumentId = "BTC-USDT";
+//из юзера
         //Map<Map<nameSettings, value>, List<Order (necessary - Active||Canceled)>>
         Map<Map<String, String>, List<Order>> algoParamsNOrdersMap = algoInstanceService
                 .findAllByUserIdAndInstrumentId(userId, instrumentId).stream()
@@ -70,8 +70,7 @@ public class OrderScheduler {
                                             if (order.getNecessarySynchronization().equals(NecessarySynchronization.UPDATED) &&
                                                     orderMatch.getState().equals(ACTIVE_STATUS_FROM_STOCK)) {
                                                 tradeOrderService.updateOrderByAlgoSettings(algoSettings, order);
-                                                //TODO: DONE или WAITING
-                                                order.setNecessarySynchronization(NecessarySynchronization.DONE);
+                                                order.setNecessarySynchronization(NecessarySynchronization.WAITING);
                                                 orderService.save(order);
                                             }
                                             if (order.getNecessarySynchronization().equals(NecessarySynchronization.CLOSED) &&
@@ -85,7 +84,7 @@ public class OrderScheduler {
                                         .switchIfEmpty(Mono.defer(() -> {
                                             if (order.getNecessarySynchronization().equals(NecessarySynchronization.ACCEPT)) {
                                                 tradeOrderService.saveOrderByAlgoSettings(algoSettings, order);
-                                                order.setNecessarySynchronization(NecessarySynchronization.DONE);
+                                                order.setNecessarySynchronization(NecessarySynchronization.WAITING);
                                                 orderService.save(order);
                                             }
                                             return Mono.empty();
@@ -96,9 +95,8 @@ public class OrderScheduler {
                                             .noneMatch(ord -> ord.getInstrumentId().equals(ordStock.getInstId())))
                                     .flatMap(ordStock -> {
                                         if (ordStock.getState().equals(ACTIVE_STATUS_FROM_STOCK)) {
-                                            //TODO: Какой статус, когда пришло из OKX
                                             Order order = OrderMapper.mapOrderDetailsResponseDTOToOrder(ordStock);
-                                            order.setNecessarySynchronization(NecessarySynchronization.WAITING);
+                                            order.setNecessarySynchronization(NecessarySynchronization.CLOSED);
                                             order.setStatus(Status.ACTIVE);
                                             orderService.save(order);
                                         }
