@@ -82,7 +82,7 @@ class BotInfoServiceImplTest {
 		mockSecurityContextHolder();
 
 		when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(mockUser));
-		when(instrumentRepository.findByInstrumentId(anyString())).thenReturn(Optional.of(mockInstrument));
+		when(instrumentRepository.findByName(anyString())).thenReturn(Optional.of(mockInstrument));
 		when(algoInstanceRepository.save(any())).thenReturn(mock(AlgoInstance.class));
 		when(algoParamRepository.saveAll(anyCollection())).thenReturn(List.of(mock(AlgoParam.class)));
 
@@ -91,7 +91,7 @@ class BotInfoServiceImplTest {
 		assertEquals(mapAlgoParameters.get("tradeMarketPare"), botParametersDto.getTradeMarketPare());
 
 		verify(algoSettingRepository, times(6)).findAlgoSettingByNameSetting(anyString());
-		verify(instrumentRepository, times(1)).findByInstrumentId(anyString());
+		verify(instrumentRepository, times(1)).findByName(anyString());
 		verify(userRepository, times(1)).findByUsername(anyString());
 		verify(algoInstanceRepository, times(1)).save(any());
 		verify(algoParamRepository, times(1)).saveAll(anyCollection());
@@ -107,12 +107,12 @@ class BotInfoServiceImplTest {
 		when(algoSettingRepository.findAlgoSettingByNameSetting(anyString())).thenReturn(Optional.of(mockAlgoSetting));
 		mockSecurityContextHolder();
 		when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(mockUser));
-		when(instrumentRepository.findByInstrumentId(anyString())).thenThrow(EntityNotFoundException.class);
+		when(instrumentRepository.findByName(anyString())).thenThrow(EntityNotFoundException.class);
 
 		assertThrows(EntityNotFoundException.class, () -> botInfoService.inputParameters(mapAlgoParameters));
 
 		verify(algoSettingRepository, times(1)).findAlgoSettingByNameSetting(anyString());
-		verify(instrumentRepository, times(1)).findByInstrumentId(anyString());
+		verify(instrumentRepository, times(1)).findByName(anyString());
 		verify(userRepository, times(1)).findByUsername(anyString());
 	}
 
@@ -157,7 +157,7 @@ class BotInfoServiceImplTest {
 
 		return Instrument.builder()
 				.id(1L)
-				.instrumentId("BTC-USD-SWAP")
+				.name("BTC-USD-SWAP")
 				.build();
 	}
 

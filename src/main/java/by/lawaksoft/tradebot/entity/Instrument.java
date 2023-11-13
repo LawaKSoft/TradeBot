@@ -21,5 +21,5 @@ public class Instrument {
 	@Id
 	@GeneratedValue(strategy= GenerationType.SEQUENCE)
 	private Long id;
-	private String instrumentId;
+	private String name;
 }

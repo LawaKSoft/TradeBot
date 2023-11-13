@@ -22,7 +22,7 @@ public class WebSocketMapper {
 
 		return ChannelInstDtoBuilder.newBuilder()
 				.channel("candle3M")
-				.instId(instrument.getInstrumentId())
+				.instId(instrument.getName())
 				.build();
 	}
 }

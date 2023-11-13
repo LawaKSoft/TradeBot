@@ -64,7 +64,7 @@ class TradeTradeOrderServiceImplTest {
     private Order getOrder() {
         return Order.builder()
                 .orderId(ORDER_ID)
-                .id(1)
+                .id("1")
                 .userId(1L)
                 .build();
     }

@@ -76,7 +76,7 @@ public class BotInfoServiceImpl implements BotInfoService {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
 		User user = userRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
-		Instrument instrument = instrumentRepository.findByInstrumentId(tradeMarketPare).orElseThrow(EntityNotFoundException::new);
+		Instrument instrument = instrumentRepository.findByName(tradeMarketPare).orElseThrow(EntityNotFoundException::new);
 		return AlgoInstance.builder()
 				.user(user)
 				.instrument(instrument)
