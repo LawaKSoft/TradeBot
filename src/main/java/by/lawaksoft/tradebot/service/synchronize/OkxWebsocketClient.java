@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 public class OkxWebsocketClient extends WebSocketClient {
 
 	private final Logger logger = Logger.getLogger(OkxWebsocketClient.class.getName());
-	private static final URI OKX_URI = URI.create("wss://ws.okx.com:8443/ws/v5/public");
+	private static final URI OKX_URI = URI.create("wss://ws.okx.com:8443/ws/v5/business");
 	private final InstrumentRepository instrumentRepository;
 	private final CandlestickRepository candlestickRepository;
 	private final ObjectMapper objectMapper;
@@ -91,7 +91,7 @@ public class OkxWebsocketClient extends WebSocketClient {
 	private void saveDataToDB(List<List<String>> data, ChannelInstDto args) {
 
 		CandlestickDto candlestickDto = DtoMapper.toCandlestickDto(data.get(0).toArray(String[]::new));
-		Instrument instrument = instrumentRepository.findByInstrumentId(args.getInstId()).orElseThrow(EntityNotFoundException::new);
+		Instrument instrument = instrumentRepository.findByName(args.getInstId()).orElseThrow(EntityNotFoundException::new);
 		Candlestick candlestick = DocumentMapper.toCandlestickDocument(candlestickDto, instrument);
 		candlestickRepository.save(candlestick);
 	}

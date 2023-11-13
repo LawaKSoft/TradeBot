@@ -20,4 +20,5 @@ public class WSResponseDto {
 	private String code;
 	private String message;
 	private List<List<String>> data;
+	private String connId;
 }
