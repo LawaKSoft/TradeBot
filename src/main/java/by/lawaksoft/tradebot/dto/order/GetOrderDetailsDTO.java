@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Getter
 public class GetOrderDetailsDTO {
 
-    private long id;
+    private String id;
     private String instrumentType;
     private String instrumentId;
     private String quantityUnitService;

@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class GetOrderResponseDTO {
 
-    private long id;
+    private String id;
     private String instrumentId;
     private String clientOrderId;
     private String orderId;
