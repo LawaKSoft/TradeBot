@@ -71,12 +71,12 @@ class OkxWebsocketClientTest {
 
 		String message = "{\"arg\":{\"channel\":\"candle3M\",\"instId\":\"BTC-USDT\"},\"data\":[[\"1688140800000\",\"30068.2\",\"31550\",\"29705.2\",\"30392.3\",\"74836.89111824\",\"2286851274.150883449\",\"2286851274.150883449\",\"0\"]]}";
 
-		when(instrumentRepository.findByInstrumentId(anyString())).thenReturn(Optional.of(getMockInstrument()));
+		when(instrumentRepository.findByName(anyString())).thenReturn(Optional.of(getMockInstrument()));
 		when(candlestickRepository.save(any())).thenReturn(mock(Candlestick.class));
 
 		okxWebsocketClient.onMessage(message);
 
-		verify(instrumentRepository, times(1)).findByInstrumentId(anyString());
+		verify(instrumentRepository, times(1)).findByName(anyString());
 		verify(candlestickRepository, times(1)).save(any());
 	}
 
@@ -87,7 +87,7 @@ class OkxWebsocketClientTest {
 
 		okxWebsocketClient.onMessage(message);
 
-		verify(instrumentRepository, never()).findByInstrumentId(anyString());
+		verify(instrumentRepository, never()).findByName(anyString());
 		verify(candlestickRepository, never()).save(any());
 	}
 
@@ -96,11 +96,11 @@ class OkxWebsocketClientTest {
 
 		String message = "{\"arg\":{\"channel\":\"candle3M\",\"instId\":\"BTC-USDT\"},\"data\":[[\"1688140800000\",\"30068.2\",\"31550\",\"29705.2\",\"30392.3\",\"74836.89111824\",\"2286851274.150883449\",\"2286851274.150883449\",\"0\"]]}";
 
-		when(instrumentRepository.findByInstrumentId(anyString())).thenThrow(EntityNotFoundException.class);
+		when(instrumentRepository.findByName(anyString())).thenThrow(EntityNotFoundException.class);
 
 		assertThrows(EntityNotFoundException.class, () -> okxWebsocketClient.onMessage(message));
 
-		verify(instrumentRepository, times(1)).findByInstrumentId(anyString());
+		verify(instrumentRepository, times(1)).findByName(anyString());
 		verify(candlestickRepository, never()).save(any());
 	}
 
@@ -111,7 +111,7 @@ class OkxWebsocketClientTest {
 
 		assertThrows(JsonMapperException.class, () -> okxWebsocketClient.onMessage(message));
 
-		verify(instrumentRepository, never()).findByInstrumentId(anyString());
+		verify(instrumentRepository, never()).findByName(anyString());
 		verify(candlestickRepository, never()).save(any());
 	}
 
@@ -119,7 +119,7 @@ class OkxWebsocketClientTest {
 
 		return Instrument.builder()
 				.id(1L)
-				.instrumentId("BTC-USDT")
+				.name("BTC-USDT")
 				.build();
 	}
 }
