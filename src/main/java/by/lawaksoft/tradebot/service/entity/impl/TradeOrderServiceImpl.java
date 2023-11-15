@@ -1,9 +1,9 @@
 package by.lawaksoft.tradebot.service.entity.impl;
 
-import by.lawaksoft.tradebot.entity.Order;
+import by.lawaksoft.tradebot.document.Order;
 import by.lawaksoft.tradebot.exception.dto.BusinessException;
 import by.lawaksoft.tradebot.exception.dto.enums.ERROR_MESSAGE;
-import by.lawaksoft.tradebot.repository.OrderRepository;
+import by.lawaksoft.tradebot.repository.mongo.OrderRepository;
 import by.lawaksoft.tradebot.service.entity.TradeOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

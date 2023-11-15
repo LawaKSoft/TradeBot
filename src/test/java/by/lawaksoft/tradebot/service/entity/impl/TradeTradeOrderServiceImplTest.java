@@ -1,9 +1,8 @@
 package by.lawaksoft.tradebot.service.entity.impl;
 
-import by.lawaksoft.tradebot.entity.Order;
-import by.lawaksoft.tradebot.entity.User;
+import by.lawaksoft.tradebot.document.Order;
 import by.lawaksoft.tradebot.exception.dto.BusinessException;
-import by.lawaksoft.tradebot.repository.OrderRepository;
+import by.lawaksoft.tradebot.repository.mongo.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -63,17 +62,10 @@ class TradeTradeOrderServiceImplTest {
 
 
     private Order getOrder() {
-        User user = getUser();
         return Order.builder()
                 .orderId(ORDER_ID)
-                .id(1)
-                .user(user)
-                .build();
-    }
-
-    private User getUser() {
-        return User.builder()
-                .id(1)
+                .id("1")
+                .userId(1L)
                 .build();
     }
 }

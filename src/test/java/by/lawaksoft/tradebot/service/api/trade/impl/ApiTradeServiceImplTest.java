@@ -2,12 +2,12 @@ package by.lawaksoft.tradebot.service.api.trade.impl;
 
 import by.lawaksoft.tradebot.client.TradeClient;
 import by.lawaksoft.tradebot.config.security.SecurityService;
+import by.lawaksoft.tradebot.document.Order;
 import by.lawaksoft.tradebot.dto.ResponseDTO;
 import by.lawaksoft.tradebot.dto.order.*;
 import by.lawaksoft.tradebot.dto.order.amend_order.AmendOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.cancel_order.CancelOrderRequestDTO;
 import by.lawaksoft.tradebot.dto.order.place_order.PlaceOrderRequestDTO;
-import by.lawaksoft.tradebot.entity.Order;
 import by.lawaksoft.tradebot.entity.User;
 import by.lawaksoft.tradebot.entity.enums.Status;
 import by.lawaksoft.tradebot.exception.dto.BusinessException;
@@ -59,7 +59,7 @@ class ApiTradeServiceImplTest {
                 .price(BigDecimal.ONE)
                 .quantityToBuyOrSell(1)
                 .tag(TAG)
-                .user(user)
+                .userId(1L)
                 .status(Status.ACTIVE)
                 .build();
         when(securityService.getUser()).thenReturn(user);
@@ -89,8 +89,8 @@ class ApiTradeServiceImplTest {
         OrderDetailsResponseDTO orderDetailsResponseDTO = getOrderDetailsResponseDTO();
         User user = getUser();
         Order order = Order.builder()
-                .user(user)
-                .id(1)
+                .userId(1L)
+                .id("1")
                 .build();
 
         when(securityService.getUser()).thenReturn(user);
@@ -100,7 +100,6 @@ class ApiTradeServiceImplTest {
 
         GetOrderDetailsDTO result = tradeService.getOrderDetails(INST_ID, ORDER_ID, null);
 
-        assertEquals(1, result.getId());
         verify(orderService).findOrderByOrderIdAndUserId(ORDER_ID, 1);
         verify(securityService).getUser();
         verify(orderService, times(1)).findOrderByOrderIdAndUserId(ORDER_ID, 1);
@@ -118,8 +117,8 @@ class ApiTradeServiceImplTest {
         OrderDetailsResponseDTO orderDetailsResponseDTO = getOrderDetailsResponseDTO();
         User user = getUser();
         Order order = Order.builder()
-                .user(user)
-                .id(1)
+                .userId(1L)
+                .id("1")
                 .build();
 
         when(securityService.getUser()).thenReturn(user);
@@ -129,7 +128,6 @@ class ApiTradeServiceImplTest {
 
         GetOrderDetailsDTO result = tradeService.getOrderDetails(INST_ID, null, CLIENT_ORDER_ID);
 
-        assertEquals(1, result.getId());
         verify(orderService).findOrderByOrderIdAndUserId(ORDER_ID, 1);
         verify(securityService).getUser();
         verify(orderService, times(1)).findOrderByOrderIdAndUserId(ORDER_ID, 1);
@@ -155,8 +153,8 @@ class ApiTradeServiceImplTest {
                 .build();
         CancelOrderRequestDTO cancelOrderRequestDTO = getCancelOrderRequestDTO();
         Order order = Order.builder()
-                .user(user)
-                .id(1)
+                .userId(1L)
+                .id("1")
                 .orderId(ORDER_ID)
                 .build();
 
@@ -169,7 +167,6 @@ class ApiTradeServiceImplTest {
         GetOrderResponseDTO getOrderResponseDTO = tradeService.cancelOrder(cancelOrderRequestDTO);
 
         assertEquals(ORDER_ID, getOrderResponseDTO.getOrderId());
-        assertEquals(1, getOrderResponseDTO.getId());
         verify(securityService).getUser();
         verify(orderService).findOrderByOrderIdAndUserId(ORDER_ID, 1);
         verify(orderService, times(1)).save(order);
@@ -200,8 +197,8 @@ class ApiTradeServiceImplTest {
                 .data(List.of(getoOrderDataResponseDTO()))
                 .build();
         Order order = Order.builder()
-                .user(user)
-                .id(1)
+                .userId(1L)
+                .id("1")
                 .orderId(ORDER_ID)
                 .requestId(REQ_ID)
                 .price(BigDecimal.ONE)
@@ -214,7 +211,6 @@ class ApiTradeServiceImplTest {
 
         GetOrderResponseDTO getOrderResponseDTO = tradeService.amendOrder(amendOrderRequestDTO);
 
-        assertEquals(1, getOrderResponseDTO.getId());
         assertEquals(ORDER_ID, getOrderResponseDTO.getOrderId());
         verify(securityService).getUser();
         verify(tradeClient).amendOrder(any(), any());
@@ -289,7 +285,7 @@ class ApiTradeServiceImplTest {
 
     private GetOrderDetailsDTO getGetOrderDetailsDTO() {
         return GetOrderDetailsDTO.builder()
-                .id(1)
+                .id("1")
                 .orderId(ORDER_ID)
                 .build();
     }

@@ -1,6 +1,6 @@
 package by.lawaksoft.tradebot.service.entity;
 
-import by.lawaksoft.tradebot.entity.Order;
+import by.lawaksoft.tradebot.document.Order;
 
 public interface TradeOrderService {
 

@@ -1,4 +1,4 @@
-package by.lawaksoft.tradebot.entity;
+package by.lawaksoft.tradebot.document;
 
 import by.lawaksoft.tradebot.entity.enums.Status;
 import jakarta.persistence.*;
@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 
@@ -14,12 +15,11 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "orders")
+@Document(collection = "orders")
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
     private String instrumentType;
     private String instrumentId;
     private String quantityUnitService;
@@ -60,8 +60,7 @@ public class Order {
     private boolean banAmend;
     private String requestId;
 
-    @OneToOne
-    private User user;
+    private Long userId;
 
     @Enumerated(EnumType.STRING)
     private Status status;

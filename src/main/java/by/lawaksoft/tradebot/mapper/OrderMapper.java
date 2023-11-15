@@ -1,10 +1,10 @@
 package by.lawaksoft.tradebot.mapper;
 
+import by.lawaksoft.tradebot.document.Order;
 import by.lawaksoft.tradebot.dto.order.GetOrderDetailsDTO;
 import by.lawaksoft.tradebot.dto.order.GetOrderResponseDTO;
 import by.lawaksoft.tradebot.dto.order.OrderDetailsResponseDTO;
 import by.lawaksoft.tradebot.dto.order.place_order.PlaceOrderRequestDTO;
-import by.lawaksoft.tradebot.entity.Order;
 
 public class OrderMapper {
 
