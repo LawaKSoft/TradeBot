@@ -21,4 +21,8 @@ public interface CreateTradeMessageService {
     String getBalanceMessage(String timestamp);
 
     String getBalanceWithCurrenciesMessage(List<String> currencies, String timestamp);
+
+    String getHistoryForWeekByInstrumentId(String instIds, String timestamp);
+
+    String getHistoryForWeekByInstrumentsIds(List<String> instrumentIds, String timestamp);
 }

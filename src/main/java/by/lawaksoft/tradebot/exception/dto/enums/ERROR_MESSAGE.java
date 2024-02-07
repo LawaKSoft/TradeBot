@@ -10,6 +10,7 @@ public enum ERROR_MESSAGE {
 	BALANCE_NOT_FOUND("Balance not found"),
 	REGISTRATION_FAILED("Can't create user with that data"),
 	ENUM_NOT_FOUND("Enum not found"),
+	BAD_ALGORITHM_INSTANCE("Cant found algorithm instance by user and instrument"),
 	JSON_MAPPER_FAILED("Failed map object to json: ");
 
 	private final String message;

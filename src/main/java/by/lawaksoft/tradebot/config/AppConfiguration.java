@@ -5,13 +5,15 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
 @EnableFeignClients("by.lawaksoft.tradebot.client")
 @EnableMongoRepositories(basePackages = {"by.lawaksoft.tradebot.repository.mongo"})
 @ComponentScan("by.lawaksoft.tradebot")
+@EnableAsync
 @EnableScheduling
 public class AppConfiguration {
 

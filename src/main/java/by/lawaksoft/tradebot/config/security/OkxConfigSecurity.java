@@ -34,4 +34,14 @@ public class OkxConfigSecurity {
         map.put(CONTENT_TYPE, JSON);
         return map;
     }
+
+    public Map<String, String> getHeader(String message, String timestamp, Map<String, String> algoParams) {
+        Map<String, String> map = new HashMap<>();
+        map.put(KEY, algoParams.get(KEY));
+        map.put(TIMESTAMP, timestamp);
+        map.put(SIGN, Encoder.generateBase64Hash(message, algoParams.get(SIGN)));
+        map.put(PASSPHRASES, algoParams.get(PASSPHRASES));
+        map.put(CONTENT_TYPE, JSON);
+        return map;
+    }
 }

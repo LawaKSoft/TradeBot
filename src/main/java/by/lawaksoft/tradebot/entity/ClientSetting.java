@@ -20,7 +20,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClientSetting {
+public class  ClientSetting {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.SEQUENCE)

@@ -1,6 +1,7 @@
 package by.lawaksoft.tradebot.entity;
 
 import by.lawaksoft.tradebot.entity.enums.Status;
+import by.lawaksoft.tradebot.entity.enums.NecessarySynchronization;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -63,6 +64,15 @@ public class Order {
     @OneToOne
     private User user;
 
+    @ManyToOne
+    private ClientType clientType;
+
+    @ManyToOne
+    private AlgoInstance algoInstance;
+
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Enumerated(EnumType.STRING)
+    private NecessarySynchronization necessarySynchronization;
 }
