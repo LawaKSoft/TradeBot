@@ -5,6 +5,7 @@ import by.lawaksoft.tradebot.entity.Instrument;
 import by.lawaksoft.tradebot.exception.JsonMapperException;
 import by.lawaksoft.tradebot.repository.InstrumentRepository;
 import by.lawaksoft.tradebot.repository.mongo.CandlestickRepository;
+import by.lawaksoft.tradebot.service.storage.PriceStorage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.java_websocket.handshake.ServerHandshake;
@@ -33,13 +34,15 @@ class OkxWebsocketClientTest {
 	private InstrumentRepository instrumentRepository;
 	@Mock
 	private CandlestickRepository candlestickRepository;
+	@Mock
+	private PriceStorage priceStorage;
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private OkxWebsocketClient okxWebsocketClient;
 
 	@BeforeEach
 	void beforeAll() {
 
-		okxWebsocketClient = new OkxWebsocketClient(instrumentRepository, candlestickRepository, objectMapper);
+		okxWebsocketClient = new OkxWebsocketClient(instrumentRepository, candlestickRepository, priceStorage, objectMapper);
 	}
 
 	@Test

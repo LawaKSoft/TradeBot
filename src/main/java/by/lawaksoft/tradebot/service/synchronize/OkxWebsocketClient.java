@@ -12,6 +12,7 @@ import by.lawaksoft.tradebot.repository.InstrumentRepository;
 import by.lawaksoft.tradebot.dto.websocket.ChannelInstDto;
 import by.lawaksoft.tradebot.dto.websocket.WSRequestDto;
 import by.lawaksoft.tradebot.dto.websocket.WSResponseDto;
+import by.lawaksoft.tradebot.service.storage.PriceStorage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -30,13 +31,16 @@ public class OkxWebsocketClient extends WebSocketClient {
 	private static final URI OKX_URI = URI.create("wss://ws.okx.com:8443/ws/v5/public");
 	private final InstrumentRepository instrumentRepository;
 	private final CandlestickRepository candlestickRepository;
+	private final PriceStorage priceStorage;
 	private final ObjectMapper objectMapper;
 
-	public OkxWebsocketClient(InstrumentRepository instrumentRepository, CandlestickRepository candlestickRepository, ObjectMapper objectMapper) {
+	public OkxWebsocketClient(InstrumentRepository instrumentRepository, CandlestickRepository candlestickRepository,
+			PriceStorage priceStorage, ObjectMapper objectMapper) {
 
 		super(OKX_URI);
 		this.instrumentRepository = instrumentRepository;
 		this.candlestickRepository = candlestickRepository;
+		this.priceStorage = priceStorage;
 		this.objectMapper = objectMapper;
 	}
 
@@ -92,6 +96,7 @@ public class OkxWebsocketClient extends WebSocketClient {
 
 		CandlestickDto candlestickDto = DtoMapper.toCandlestickDto(data.get(0).toArray(String[]::new));
 		Instrument instrument = instrumentRepository.findByInstrumentId(args.getInstId()).orElseThrow(EntityNotFoundException::new);
+		priceStorage.put(instrument.getInstrumentId(), candlestickDto.getClosePrice());
 		Candlestick candlestick = DocumentMapper.toCandlestickDocument(candlestickDto, instrument);
 		candlestickRepository.save(candlestick);
 	}

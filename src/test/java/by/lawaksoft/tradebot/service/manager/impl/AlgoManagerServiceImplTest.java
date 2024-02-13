@@ -70,7 +70,7 @@ class AlgoManagerServiceImplTest {
 
     private AlgoGridServiceImpl getAlgoGridService() {
 
-        return new AlgoGridServiceImpl();
+        return new AlgoGridServiceImpl(null, null, null);
     }
 
     private AlgoInstanceDto getAlgoInstanceDto() {
