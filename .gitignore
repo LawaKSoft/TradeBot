@@ -3,3 +3,8 @@
 lib
 build
 .*iml
+**/target/**
+/target
+.idea/workspace.xml
+.idea/compiler.xml
+.idea/dataSources*
